@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Planes — Agente LFT</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --ink: #0d0d0d; --paper: #f8f6f1; --warm: #f0ede6; --rule: #d8d4cc; --ghost: #b0aba0; --accent: #E8572A; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; cursor: none; }
+.cursor { width:8px;height:8px;background:var(--ink);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%); }
+.cursor-ring { width:32px;height:32px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.7; }
+a,button{cursor:none;}
+nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 5vw;background:rgba(248,246,241,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule); }
+.nav-logo { font-size:1rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--ink); }
+.nav-links { display:flex;gap:2.5rem;list-style:none; }
+.nav-links a { font-size:.7rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;color:var(--ink);opacity:.5;transition:opacity .2s; }
+.nav-links a:hover{opacity:1;}
+.nav-links a.active{opacity:1;}
+
+.hero { padding:10rem 5vw 5rem;border-bottom:1px solid var(--rule); }
+.hero-eyebrow { font-size:.65rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem; }
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.hero-title { font-size:clamp(3rem,8vw,7rem);font-weight:900;line-height:.95;letter-spacing:-.03em;margin-bottom:1.5rem; }
+.hero-title em{font-style:normal;font-weight:300;}
+.hero-sub { font-size:1rem;color:var(--ghost);max-width:500px;line-height:1.7; }
+
+/* Toggle anual/mensual */
+.billing-toggle { display:flex;align-items:center;gap:1rem;padding:3rem 5vw 0;font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost); }
+.toggle-track { width:40px;height:22px;background:var(--rule);border-radius:11px;position:relative;cursor:none;transition:background .2s; }
+.toggle-track.active{background:var(--ink);}
+.toggle-knob { width:16px;height:16px;background:var(--paper);border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .2s; }
+.toggle-track.active .toggle-knob{transform:translateX(18px);}
+.toggle-label.active{color:var(--ink);}
+.save-badge { font-size:.55rem;font-weight:700;letter-spacing:.15em;background:var(--accent);color:white;padding:.15rem .5rem;border-radius:2px; }
+
+/* Planes grid */
+.plans-section { padding:3rem 5vw 7rem; }
+.plans-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule);margin-bottom:4rem; }
+.plan { padding:3rem 2.5rem;border-right:1px solid var(--rule);display:flex;flex-direction:column;position:relative;transition:background .3s; }
+.plan:last-child{border-right:none;}
+.plan.featured { background:var(--ink);color:var(--paper); }
+.plan-tag { font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.2rem .6rem;margin-bottom:1.5rem;align-self:flex-start;border:1px solid var(--rule); }
+.plan.featured .plan-tag{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.6);}
+.plan-name { font-size:2.5rem;font-weight:900;line-height:1;margin-bottom:.75rem; }
+.plan-price-block { margin-bottom:2rem; }
+.plan-price { font-size:3.5rem;font-weight:900;line-height:1;letter-spacing:-.03em; }
+.plan-price sup { font-size:1rem;font-weight:400;vertical-align:super; }
+.plan-price-period { font-size:.7rem;color:var(--ghost);margin-top:.25rem; }
+.plan.featured .plan-price-period{color:rgba(255,255,255,.4);}
+.plan-price-loyalty { font-size:.65rem;color:var(--ghost);margin-top:.5rem;line-height:1.7;opacity:.8; }
+.plan.featured .plan-price-loyalty{color:rgba(255,255,255,.4);}
+.plan-divider { border:none;border-top:1px solid var(--rule);margin:1.5rem 0; }
+.plan.featured .plan-divider{border-color:rgba(255,255,255,.1);}
+.plan-features { flex:1; }
+.plan-feature { font-size:.82rem;line-height:1.6;color:#555;margin-bottom:.75rem;padding-left:1.25rem;position:relative; }
+.plan.featured .plan-feature{color:rgba(255,255,255,.65);}
+.plan-feature::before{content:'—';position:absolute;left:0;color:var(--ghost);font-size:.7rem;}
+.plan-feature.highlight::before{content:'→';color:var(--accent);}
+.plan-feature.highlight{color:var(--ink);font-weight:500;}
+.plan.featured .plan-feature.highlight{color:var(--paper);}
+.plan-cta { margin-top:2rem; }
+.plan-btn { display:block;text-align:center;padding:.875rem;font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;border:1px solid var(--ink);transition:background .2s,color .2s;color:var(--ink);margin-bottom:.5rem; }
+.plan-btn:hover{background:var(--ink);color:var(--paper);}
+.plan-btn.secondary{border-color:var(--rule);color:var(--ghost);font-size:.6rem;}
+.plan-btn.secondary:hover{border-color:var(--ink);color:var(--ink);background:transparent;}
+.plan.featured .plan-btn{border-color:var(--paper);color:var(--paper);}
+.plan.featured .plan-btn:hover{background:var(--paper);color:var(--ink);}
+.plan-note { font-size:.6rem;color:var(--ghost);text-align:center;margin-top:.5rem; }
+.plan.featured .plan-note{color:rgba(255,255,255,.3);}
+
+/* Partners row */
+.partners-row { display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--rule);border-top:none; }
+.partner { padding:2.5rem;border-right:1px solid var(--rule);transition:background .3s; }
+.partner:last-child{border-right:none;}
+.partner:hover{background:var(--warm);}
+.partner-eyebrow { font-size:.55rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--ghost);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem; }
+.partner-eyebrow::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);}
+.partner-name { font-size:1.5rem;font-weight:700;margin-bottom:.5rem; }
+.partner-price { font-size:.75rem;color:var(--ghost);margin-bottom:1.5rem; }
+.partner-features { list-style:none;margin-bottom:1.5rem; }
+.partner-features li { font-size:.78rem;color:#555;padding:.4rem 0;border-bottom:1px solid var(--rule);display:flex;gap:.5rem; }
+.partner-features li::before{content:'·';color:var(--ink);}
+.partner-btn { display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:2px;transition:color .2s,border-color .2s; }
+.partner-btn:hover{color:var(--accent);border-color:var(--accent);}
+
+/* FAQ */
+.faq-section { padding:5rem 5vw;border-top:1px solid var(--rule); }
+.faq-title { font-size:clamp(2rem,4vw,3.5rem);font-weight:900;letter-spacing:-.03em;margin-bottom:3rem; }
+.faq-grid { display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule); }
+.faq-item { padding:2rem 2.5rem;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule); }
+.faq-item:nth-child(even){border-right:none;}
+.faq-item:nth-last-child(-n+2){border-bottom:none;}
+.faq-q { font-size:.85rem;font-weight:700;margin-bottom:.75rem;line-height:1.4; }
+.faq-a { font-size:.8rem;color:var(--ghost);line-height:1.7; }
+
+/* CTA bottom */
+.cta-band { background:var(--ink);color:var(--paper);padding:5rem 5vw;display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center;border-top:1px solid var(--rule); }
+.cta-band h2 { font-size:clamp(2rem,4vw,3.5rem);font-weight:900;letter-spacing:-.03em;line-height:1; }
+.cta-band p { font-size:.85rem;color:rgba(255,255,255,.5);margin-top:.75rem;line-height:1.7; }
+.btn-white { display:inline-flex;align-items:center;gap:.75rem;background:var(--paper);color:var(--ink);padding:1rem 2rem;font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:opacity .2s;white-space:nowrap; }
+.btn-white:hover{opacity:.85;}
+
+footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem; }
+.footer-brand{font-size:1.2rem;font-weight:700;letter-spacing:.1em;}
+.footer-center{text-align:center;font-size:.65rem;color:var(--ghost);letter-spacing:.1em;line-height:1.8;}
+.footer-links{display:flex;justify-content:flex-end;gap:2rem;}
+.footer-links a{font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ghost);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--ink);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+@media(max-width:900px){
+  nav{padding:1.25rem 1.5rem;}.nav-links{display:none;}
+  .hero{padding:8rem 1.5rem 3rem;}
+  .plans-section{padding:2rem 1.5rem 4rem;}
+  .plans-grid{grid-template-columns:1fr;}
+  .plan{border-right:none;border-bottom:1px solid var(--rule);}
+  .plan:last-child{border-bottom:none;}
+  .partners-row{grid-template-columns:1fr;}
+  .partner{border-right:none;border-bottom:1px solid var(--rule);}
+  .faq-grid{grid-template-columns:1fr;}
+  .faq-item{border-right:none;}
+  .faq-item:nth-last-child(-n+2){border-bottom:1px solid var(--rule);}
+  .faq-item:last-child{border-bottom:none;}
+  .cta-band{grid-template-columns:1fr;gap:2rem;}
+  footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-content:center;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Agente LFT</a>
+  <ul class="nav-links">
+    <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+    <li><a href="pricing.html" class="active">Planes</a></li>
+    <li><a href="index.html#partners">Partners</a></li>
+    <li><a href="abogados.html">Abogados</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Planes y precios</div>
+  <h1 class="hero-title">El plan correcto<br />para <em>cada caso.</em></h1>
+  <p class="hero-sub">Empieza gratis. Escala cuando lo necesites. Sin contratos, sin letra chica.</p>
+</div>
+
+<div class="billing-toggle" id="billingToggle">
+  <span class="toggle-label active" id="label-mensual">Mensual</span>
+  <div class="toggle-track" id="toggleTrack" onclick="toggleBilling()">
+    <div class="toggle-knob"></div>
+  </div>
+  <span class="toggle-label" id="label-anual">Prepago <span class="save-badge">AHORRA 40%</span></span>
+</div>
+
+<section class="plans-section">
+  <div class="plans-grid reveal">
+
+    <!-- FREE -->
+    <div class="plan">
+      <div class="plan-tag">Free</div>
+      <div class="plan-name">Gratis</div>
+      <div class="plan-price-block">
+        <div class="plan-price"><sup>$</sup>0</div>
+        <div class="plan-price-period">para siempre</div>
+      </div>
+      <hr class="plan-divider" />
+      <div class="plan-features">
+        <p class="plan-feature">8 consultas por mes</p>
+        <p class="plan-feature">Cálculos básicos LFT</p>
+        <p class="plan-feature">Respuesta en lenguaje claro</p>
+        <p class="plan-feature">Acceso vía WhatsApp</p>
+        <p class="plan-feature">Conexión con abogado on demand</p>
+      </div>
+      <div class="plan-cta">
+        <a href="https://wa.me/525534844790" class="plan-btn">Empezar gratis →</a>
+        <p class="plan-note">Sin tarjeta. Sin compromisos.</p>
+      </div>
+    </div>
+
+    <!-- PLUS -->
+    <div class="plan featured">
+      <div class="plan-tag">Más popular</div>
+      <div class="plan-name">Plus</div>
+      <div class="plan-price-block">
+        <div class="plan-price" id="plus-price"><sup>$</sup>49</div>
+        <div class="plan-price-period" id="plus-period">MXN / mes</div>
+        <div class="plan-price-loyalty" id="plus-loyalty">Mes 6–11: $39/mes · Mes 12+: $29/mes</div>
+      </div>
+      <hr class="plan-divider" />
+      <div class="plan-features">
+        <p class="plan-feature highlight">Consultas ilimitadas</p>
+        <p class="plan-feature">Memoria de tus casos y datos</p>
+        <p class="plan-feature">Cálculos personalizados</p>
+        <p class="plan-feature">Datos actualizables</p>
+        <p class="plan-feature highlight">Conexión con abogado certificado</p>
+      </div>
+      <div class="plan-cta">
+        <a href="https://buy.stripe.com/test_5kQ6oJ6Mseem1n7dGc5c401" class="plan-btn" id="plus-btn-1">Suscribirse $49/mes →</a>
+        <a href="https://buy.stripe.com/test_00w4gB7Qwc6eaXHcC85c403" class="plan-btn secondary" id="plus-btn-2" style="border-color:var(--accent);">6 meses — $234 MXN</a>
+        <a href="https://buy.stripe.com/test_dRmfZj0o46LU2rb9pW5c400" class="plan-btn secondary" id="plus-btn-3" style="border-color:var(--accent);color:var(--accent);">12 meses — $348 MXN</a>
+        <p class="plan-note">Cancela cuando quieras.</p>
+      </div>
+    </div>
+
+    <!-- BUSINESS -->
+    <div class="plan">
+      <div class="plan-tag">Despachos</div>
+      <div class="plan-name">Business</div>
+      <div class="plan-price-block">
+        <div class="plan-price"><sup>$</sup>500</div>
+        <div class="plan-price-period">MXN / mes base</div>
+        <div class="plan-price-loyalty">+ $50 MXN por abogado registrado</div>
+      </div>
+      <hr class="plan-divider" />
+      <div class="plan-features">
+        <p class="plan-feature highlight">Tecnología bajo tu marca</p>
+        <p class="plan-feature">Abogados propios certificados</p>
+        <p class="plan-feature">Pool de respaldo automático</p>
+        <p class="plan-feature">Números siempre protegidos</p>
+        <p class="plan-feature highlight">Clientes nuevos vía plataforma</p>
+        <p class="plan-feature">Sello de despacho certificado</p>
+      </div>
+      <div class="plan-cta">
+        <a href="registro-despacho.html" class="plan-btn">Registrar despacho →</a>
+        <p class="plan-note">Incluye certificación Agente LFT.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PARTNERS ROW -->
+  <div class="partners-row reveal">
+    <div class="partner">
+      <div class="partner-eyebrow">Partner Independiente</div>
+      <div class="partner-name">Abogado Certificado</div>
+      <div class="partner-price">Alta gratuita · 15% por atención</div>
+      <ul class="partner-features">
+        <li>Alta 100% gratuita con verificación de cédula e INE</li>
+        <li>Recibe clientes calificados desde WhatsApp</li>
+        <li>Número siempre privado y protegido</li>
+        <li>Ranking público por calificación</li>
+        <li>Pro bono = visibilidad preferente en catálogo</li>
+      </ul>
+      <a href="registro-abogado.html" class="partner-btn">Solicitar alta →</a>
+    </div>
+    <div class="partner">
+    </div>
+  </div>
+
+  <p style="font-size:.7rem;color:var(--ghost);margin-top:1.5rem;">* La lealtad de precio aplica para suscripciones mensuales consecutivas sin cancelación. El precio prepago se cobra en un solo cargo.</p>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <h2 class="faq-title reveal">Preguntas frecuentes</h2>
+  <div class="faq-grid reveal">
+    <div class="faq-item">
+      <div class="faq-q">¿Qué pasa cuando se acaban mis 5 consultas gratis?</div>
+      <div class="faq-a">El Agente te avisará y te ofrecerá suscribirte al plan Plus directamente desde WhatsApp. Puedes seguir leyendo tu historial, pero no podrás hacer nuevas consultas hasta el siguiente mes o si te suscribes.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">¿Puedo cancelar en cualquier momento?</div>
+      <div class="faq-a">Sí. Las suscripciones mensuales se cancelan cuando quieras y el acceso Plus se mantiene hasta el final del período pagado. Los prepagos de 6 o 12 meses no son reembolsables.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">¿Cómo funciona el precio de lealtad?</div>
+      <div class="faq-a">Tu precio baja automáticamente mientras mantengas la suscripción activa: $49 los primeros 5 meses, $39 del mes 6 al 11, y $29 a partir del mes 12. No tienes que hacer nada.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">¿El Agente reemplaza a un abogado?</div>
+      <div class="faq-a">No. Agente LFT te da orientación legal clara basada en la LFT vigente, pero no es un despacho ni da asesoría jurídica formal. Para casos complejos, te conecta con abogados reales certificados.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">¿Cómo pago?</div>
+      <div class="faq-a">Con tarjeta de crédito o débito vía Stripe, directamente desde WhatsApp. El proceso toma menos de 2 minutos y recibes confirmación inmediata por correo.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">¿Mis datos están seguros?</div>
+      <div class="faq-a">Sí. No compartimos tu número ni datos personales con abogados ni terceros. Toda comunicación ocurre dentro de la plataforma y tus datos se almacenan de forma cifrada.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div>
+    <h2>Empieza hoy.<br />Es gratis.</h2>
+    <p>5 consultas gratuitas. Sin tarjeta. En WhatsApp ahora mismo.</p>
+  </div>
+  <a href="https://wa.me/525534844790" class="btn-white">Consultar gratis →</a>
+</div>
+
+<footer>
+  <div class="footer-brand">Agente LFT</div>
+  <div class="footer-center">© 2026 Disrupting MEX · Ciudad de México<br />Todos los derechos reservados</div>
+  <div class="footer-links">
+    <a href="abogados.html">Abogados</a>
+    <a href="terminos.html">Términos</a>
+    <a href="privacidad.html">Privacidad</a>
+  </div>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animateRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animateRing);}
+animateRing();
+
+let isPrepago = false;
+function toggleBilling() {
+  isPrepago = !isPrepago;
+  const track = document.getElementById('toggleTrack');
+  track.classList.toggle('active', isPrepago);
+  document.getElementById('label-mensual').classList.toggle('active', !isPrepago);
+  document.getElementById('label-anual').classList.toggle('active', isPrepago);
+  if (isPrepago) {
+    document.getElementById('plus-price').innerHTML = '<sup>$</sup>29';
+    document.getElementById('plus-period').textContent = 'MXN / mes (promedio 12 meses)';
+    document.getElementById('plus-loyalty').textContent = 'Prepago 12 meses: $348 MXN · 6 meses: $234 MXN';
+    document.getElementById('plus-btn-1').textContent = '12 meses — $348 MXN →';
+    document.getElementById('plus-btn-1').href = 'https://buy.stripe.com/test_dRmfZj0o46LU2rb9pW5c400';
+    document.getElementById('plus-btn-2').textContent = '6 meses — $234 MXN';
+    document.getElementById('plus-btn-3').style.display = 'none';
+  } else {
+    document.getElementById('plus-price').innerHTML = '<sup>$</sup>49';
+    document.getElementById('plus-period').textContent = 'MXN / mes';
+    document.getElementById('plus-loyalty').textContent = 'Mes 6–11: $39/mes · Mes 12+: $29/mes';
+    document.getElementById('plus-btn-1').textContent = 'Suscribirse $49/mes →';
+    document.getElementById('plus-btn-1').href = 'https://buy.stripe.com/test_5kQ6oJ6Mseem1n7dGc5c401';
+    document.getElementById('plus-btn-2').textContent = '6 meses — $234 MXN';
+    document.getElementById('plus-btn-3').style.display = 'block';
+  }
+}
+
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver(e=>{e.forEach(r=>{if(r.isIntersecting){r.target.classList.add('visible');io.unobserve(r.target);}});},{threshold:.1});
+reveals.forEach(r=>io.observe(r));
+</script>
+</body>
+</html>
