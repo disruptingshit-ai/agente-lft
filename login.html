@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Acceso — Agente LFT</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --ink: #0d0d0d; --paper: #f8f6f1; --warm: #f0ede6; --rule: #d8d4cc; --ghost: #b0aba0; --accent: #E8572A; }
+html { height: 100%; font-size: 16px; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; cursor: none; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+.cursor { width:8px;height:8px;background:var(--ink);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%); }
+.cursor-ring { width:32px;height:32px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.7; }
+a,button{cursor:none;}
+
+.left-panel { background:var(--ink);color:var(--paper);padding:3rem;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden; }
+.left-logo { font-size:1rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--paper); }
+.left-eyebrow { font-size:.6rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem; }
+.left-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.left-title { font-size:clamp(2.5rem,4vw,4rem);font-weight:900;line-height:.95;letter-spacing:-.03em;margin-bottom:2rem; }
+.left-title em{font-style:normal;font-weight:300;opacity:.5;}
+.left-roles { display:flex;flex-direction:column;gap:.75rem;margin-top:2rem; }
+.left-role { display:flex;align-items:center;gap:.75rem;font-size:.75rem;color:rgba(255,255,255,.4); }
+.left-role-dot { width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0; }
+.left-role span { color:rgba(255,255,255,.8);font-weight:500; }
+.left-bg { position:absolute;bottom:-4rem;right:-4rem;font-size:20rem;font-weight:900;color:rgba(255,255,255,.03);line-height:1;pointer-events:none;user-select:none; }
+.left-footer { font-size:.65rem;color:rgba(255,255,255,.2);letter-spacing:.1em; }
+
+.right-panel { display:flex;flex-direction:column;justify-content:center;padding:4rem 5vw;max-width:480px;margin:0 auto;width:100%; }
+.form-eyebrow { font-size:.6rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ghost);margin-bottom:3rem;display:flex;align-items:center;gap:.75rem; }
+.form-eyebrow::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);}
+
+.step { display:none; }
+.step.active { display:block; }
+
+.step-title { font-size:2rem;font-weight:900;letter-spacing:-.02em;margin-bottom:.5rem; }
+.step-sub { font-size:.85rem;color:var(--ghost);margin-bottom:2.5rem;line-height:1.6; }
+
+.step-dots { display:flex;gap:.5rem;margin-bottom:2.5rem; }
+.sdot { width:24px;height:3px;background:var(--rule);transition:background .3s; }
+.sdot.active{background:var(--ink);}
+.sdot.done{background:var(--accent);}
+
+.field-label { font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-bottom:.5rem;display:block; }
+.field-group { display:flex;border:1px solid var(--rule);margin-bottom:1.5rem;transition:border-color .2s; }
+.field-group:focus-within{border-color:var(--ink);}
+.field-prefix { padding:.875rem 1rem;background:var(--warm);font-size:.85rem;color:var(--ghost);border-right:1px solid var(--rule);white-space:nowrap;display:flex;align-items:center; }
+.field-input { flex:1;padding:.875rem 1rem;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;color:var(--ink); }
+.field-input::placeholder{color:var(--rule);}
+
+.otp-group { display:flex;gap:.5rem;margin-bottom:1.5rem; }
+.otp-input { width:44px;height:52px;text-align:center;font-family:'DM Sans',sans-serif;font-size:1.4rem;font-weight:700;border:1px solid var(--rule);background:transparent;outline:none;color:var(--ink);transition:border-color .2s; }
+.otp-input:focus{border-color:var(--ink);}
+
+/* Estado detectando rol */
+.detecting-box { border:1px solid var(--rule);padding:1.5rem;margin-bottom:1.5rem;display:none; }
+.detecting-row { display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:var(--ghost); }
+.detecting-dot { width:8px;height:8px;border-radius:50%;background:var(--rule);animation:pulse 1s infinite; }
+.detecting-dot.found{background:var(--accent);animation:none;}
+@keyframes pulse{0%,100%{opacity:.3;}50%{opacity:1;}}
+.role-badge { display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:.2rem .6rem;margin-left:.5rem; }
+
+.btn-primary { display:block;width:100%;padding:1rem;background:var(--ink);color:var(--paper);font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border:none;text-align:center;transition:background .2s,opacity .2s;margin-bottom:.75rem; }
+.btn-primary:hover{background:#2a2a2a;}
+.btn-primary:disabled{opacity:.4;}
+.btn-back { display:block;width:100%;padding:.75rem;background:transparent;color:var(--ghost);font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--rule);text-align:center;transition:all .2s; }
+.btn-back:hover{border-color:var(--ink);color:var(--ink);}
+
+.error-msg { font-size:.72rem;color:var(--accent);margin-bottom:1rem;display:none;padding:.5rem 0; }
+.info-msg { font-size:.72rem;color:var(--ghost);margin-bottom:1rem;padding:.5rem;background:var(--warm);border-left:2px solid var(--accent);display:none; }
+
+.resend { font-size:.7rem;color:var(--ghost);margin-top:1rem; }
+.resend button{background:none;border:none;color:var(--ink);font-size:.7rem;font-weight:500;text-decoration:underline;padding:0;}
+
+.divider { display:flex;align-items:center;gap:1rem;margin:1.5rem 0;color:var(--ghost);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase; }
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--rule);}
+.btn-wa { display:flex;align-items:center;justify-content:center;gap:.75rem;width:100%;padding:.875rem;background:#25D366;color:white;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:opacity .2s; }
+.btn-wa:hover{opacity:.9;}
+.wa-icon{width:16px;height:16px;fill:white;flex-shrink:0;}
+
+.form-note { font-size:.65rem;color:var(--ghost);line-height:1.6;margin-top:1.5rem;text-align:center; }
+.form-note a{color:var(--ink);}
+
+@media(max-width:900px){
+  body{grid-template-columns:1fr;}
+  .left-panel{display:none;}
+  .right-panel{padding:5rem 1.5rem 3rem;max-width:100%;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Panel izquierdo -->
+<div class="left-panel">
+  <a href="index.html" class="left-logo">Agente LFT</a>
+  <div>
+    <div class="left-eyebrow">Portal de operadores</div>
+    <h1 class="left-title">Tu portal.<br /><em>Tu rol.</em><br />Tu acceso.</h1>
+    <div class="left-roles">
+      <div class="left-role"><div class="left-role-dot"></div><span>Abogado</span> — perfil y calificaciones</div>
+      <div class="left-role"><div class="left-role-dot"></div><span>Despacho</span> — gestión de equipo</div>
+      <div class="left-role"><div class="left-role-dot"></div><span>Super Admin</span> — control total</div>
+    </div>
+  </div>
+  <div class="left-bg">⚖</div>
+  <div class="left-footer">© 2026 Disrupting MEX · Ciudad de México</div>
+</div>
+
+<!-- Panel derecho -->
+<div class="right-panel">
+  <div class="form-eyebrow">Acceso seguro</div>
+
+  <!-- Step 1: Número -->
+  <div class="step active" id="step1">
+    <div class="step-dots"><div class="sdot active"></div><div class="sdot"></div><div class="sdot"></div></div>
+    <h2 class="step-title">Ingresa tu número</h2>
+    <p class="step-sub">Usamos tu número de WhatsApp para identificarte y dirigirte a tu portal.</p>
+    <label class="field-label">Número de WhatsApp</label>
+    <div class="field-group">
+      <div class="field-prefix">🇲🇽 +52</div>
+      <input type="tel" class="field-input" id="phone-input" placeholder="55 1234 5678" maxlength="10" />
+    </div>
+    <div class="error-msg" id="err1">Ingresa un número válido de 10 dígitos.</div>
+    <button class="btn-primary" onclick="checkPhone()">Continuar →</button>
+    <div class="divider">o entra directo como cliente</div>
+    <a href="https://wa.me/525534844790" class="btn-wa">
+      <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Consultar como cliente →
+    </a>
+    <p class="form-note">Al acceder aceptas nuestros <a href="terminos.html">Términos</a> y <a href="privacidad.html">Aviso de Privacidad</a>.</p>
+  </div>
+
+  <!-- Step 2: Detectando rol -->
+  <div class="step" id="step2">
+    <div class="step-dots"><div class="sdot done"></div><div class="sdot active"></div><div class="sdot"></div></div>
+    <h2 class="step-title">Verificando acceso</h2>
+    <p class="step-sub" id="step2-sub">Buscando tu perfil en el sistema...</p>
+    <div class="detecting-box" id="detecting-box">
+      <div class="detecting-row">
+        <div class="detecting-dot" id="det-dot"></div>
+        <span id="det-msg">Buscando número en el sistema...</span>
+        <span class="role-badge" id="det-badge" style="display:none"></span>
+      </div>
+    </div>
+    <div class="error-msg" id="err2">Este número no tiene acceso al portal. ¿Eres abogado? <a href="registro-abogado.html">Regístrate aquí.</a></div>
+    <button class="btn-primary" id="btn-send-otp" style="display:none" onclick="goToOTP()">Enviar código →</button>
+    <button class="btn-back" onclick="goToStep1()">← Cambiar número</button>
+  </div>
+
+  <!-- Step 3: OTP -->
+  <div class="step" id="step3">
+    <div class="step-dots"><div class="sdot done"></div><div class="sdot done"></div><div class="sdot active"></div></div>
+    <h2 class="step-title">Código de acceso</h2>
+    <p class="step-sub" id="step3-sub">Ingresa el código de 6 dígitos enviado a tu WhatsApp.</p>
+    <div class="info-msg" id="otp-info" style="display:block;">✓ Código enviado. Puede tardar hasta 30 segundos.</div>
+    <div class="otp-group">
+      <input type="number" class="otp-input" min="0" max="9" />
+      <input type="number" class="otp-input" min="0" max="9" />
+      <input type="number" class="otp-input" min="0" max="9" />
+      <input type="number" class="otp-input" min="0" max="9" />
+      <input type="number" class="otp-input" min="0" max="9" />
+      <input type="number" class="otp-input" min="0" max="9" />
+    </div>
+    <div class="error-msg" id="err3">Código incorrecto. Intenta de nuevo.</div>
+    <button class="btn-primary" onclick="verifyOTP()">Entrar →</button>
+    <button class="btn-back" onclick="goToStep1()">← Cambiar número</button>
+    <div class="resend">¿No llegó? <button onclick="resendCode()">Reenviar código</button></div>
+  </div>
+
+</div>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animateRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animateRing);}
+animateRing();
+
+// OTP auto-advance
+document.querySelectorAll('.otp-input').forEach((inp,i,arr)=>{
+  inp.addEventListener('input',()=>{
+    const v=inp.value.toString().slice(-1);inp.value=v;
+    if(v&&i<arr.length-1)arr[i+1].focus();
+  });
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Backspace'&&!inp.value&&i>0)arr[i-1].focus();
+  });
+});
+
+let currentPhone='', detectedRole='';
+
+// Roles simulados — en producción esto va a N8N → Google Sheets
+const ROLES = {
+  // 'numero': 'rol'
+  // Vacío en producción, se consulta dinámicamente
+};
+
+function show(id){['step1','step2','step3'].forEach(s=>document.getElementById(s).classList.remove('active'));document.getElementById(id).classList.add('active');}
+
+function checkPhone(){
+  const raw=document.getElementById('phone-input').value.replace(/\D/g,'');
+  if(raw.length<10){document.getElementById('err1').style.display='block';return;}
+  document.getElementById('err1').style.display='none';
+  currentPhone='+52'+raw;
+  show('step2');
+  detectRole(currentPhone);
+}
+
+function detectRole(phone){
+  const box=document.getElementById('detecting-box');
+  const dot=document.getElementById('det-dot');
+  const msg=document.getElementById('det-msg');
+  const badge=document.getElementById('det-badge');
+  const err=document.getElementById('err2');
+  const btn=document.getElementById('btn-send-otp');
+  box.style.display='block';
+  err.style.display='none';
+  btn.style.display='none';
+  badge.style.display='none';
+  dot.classList.remove('found');
+  msg.textContent='Buscando número en el sistema...';
+
+  // En producción: fetch a N8N webhook que consulta Google Sheets
+  // Por ahora simula la búsqueda
+  setTimeout(()=>{
+    // Simulación: cualquier número válido es "abogado" en demo
+    // En prod: la respuesta del webhook define el rol
+    const role = ROLES[phone] || 'abogado'; // demo fallback
+    detectedRole = role;
+    const roleLabels = {superadmin:'Super Admin', despacho:'Admin Despacho', abogado:'Abogado'};
+    dot.classList.add('found');
+    msg.textContent='Perfil encontrado:';
+    badge.textContent=roleLabels[role]||role;
+    badge.style.display='inline-block';
+    btn.style.display='block';
+
+    /* Si no existe en el sistema:
+    err.style.display='block';
+    box.style.display='none';
+    */
+  }, 1400);
+}
+
+function goToOTP(){
+  document.getElementById('step3-sub').textContent='Ingresa el código enviado al '+currentPhone;
+  show('step3');
+  // En producción: llamar N8N webhook para generar y enviar OTP vía WhatsApp
+}
+
+function verifyOTP(){
+  const code=Array.from(document.querySelectorAll('.otp-input')).map(i=>i.value).join('');
+  if(code.length<6){document.getElementById('err3').style.display='block';return;}
+  document.getElementById('err3').style.display='none';
+  // En producción: verificar OTP contra N8N/Sheets
+  // Redirige según rol detectado
+  const redirects={
+    superadmin:'dashboard-superadmin.html',
+    despacho:'dashboard-despacho.html',
+    abogado:'perfil-abogado.html'
+  };
+  window.location.href=(redirects[detectedRole]||'perfil-abogado.html')+'?phone='+encodeURIComponent(currentPhone);
+}
+
+function goToStep1(){show('step1');}
+function resendCode(){document.getElementById('otp-info').style.display='block';}
+</script>
+</body>
+</html>
