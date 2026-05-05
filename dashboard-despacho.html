@@ -131,6 +131,28 @@ a,button{cursor:none;}
   .th:nth-child(3),.th:nth-child(4),.td:nth-child(3),.td:nth-child(4){display:none;}
 }
 </style>
+<script>
+// Auth check — debe estar en head para bloquear render
+(function(){
+  const phone = sessionStorage.getItem('lft_phone');
+  const rol = sessionStorage.getItem('lft_rol');
+  const ts = sessionStorage.getItem('lft_ts');
+  if (!phone || !rol || !ts || (Date.now() - parseInt(ts) > 8*60*60*1000)) {
+    window.location.replace('login.html');
+  }
+  const page = window.location.pathname.split('/').pop();
+  const perms = {
+    'dashboard-superadmin.html': ['superadmin'],
+    'dashboard-despacho.html': ['superadmin','despacho'],
+    'perfil-abogado.html': ['superadmin','abogado']
+  };
+  const allowed = perms[page];
+  if (allowed && !allowed.includes(rol)) {
+    const r = {superadmin:'dashboard-superadmin.html',despacho:'dashboard-despacho.html',abogado:'perfil-abogado.html'};
+    window.location.replace(r[rol] || 'login.html');
+  }
+})();
+</script>
 </head>
 <body>
 <div class="cursor" id="cursor"></div>
@@ -155,7 +177,7 @@ a,button{cursor:none;}
     <a href="#" class="nav-item"><span class="nav-icon">🔔</span>Notificaciones</a>
   </nav>
   <div class="sidebar-bottom">
-    <a href="login.html"><span>→</span> Cerrar sesión</a>
+    <a href="#" onclick="AUTH.clearSession();window.location.href='login.html'"><span>→</span> Cerrar sesión</a>
   </div>
 </aside>
 

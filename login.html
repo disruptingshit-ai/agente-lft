@@ -210,12 +210,15 @@ function verifyOTP(){
   const code=Array.from(document.querySelectorAll('.otp-input')).map(i=>i.value).join('');
   if(code.length<6){document.getElementById('err3').style.display='block';return;}
   document.getElementById('err3').style.display='none';
-  const redirects={superadmin:'dashboard-superadmin.html',despacho:'dashboard-despacho.html',abogado:'perfil-abogado.html'};
-  window.location.href=redirects[detectedRole]||'perfil-abogado.html';
+  // Guardar sesión y redirigir
+  AUTH.saveSession('+52'+currentPhone, detectedRole);
+  AUTH.redirectByRole(detectedRole);
 }
 
 function goToStep1(){show('step1');}
 function resendCode(){}
 </script>
+<script>window.__skipAuthCheck = true;</script>
+<script src="auth.js"></script>
 </body>
 </html>
