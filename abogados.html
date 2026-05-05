@@ -1,295 +1,427 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Directorio de Abogados — Agente LFT</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root { --ink: #0d0d0d; --paper: #f8f6f1; --warm: #f0ede6; --rule: #d8d4cc; --ghost: #b0aba0; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Abogados Certificados — Agente LFT</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --ink: #0d0d0d; --paper: #f8f6f1; --warm: #f0ede6; --rule: #d8d4cc; --ghost: #b0aba0; --accent: #E8572A; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; cursor: none; }
+.cursor { width:8px;height:8px;background:var(--ink);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%); }
+.cursor-ring { width:32px;height:32px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.7; }
+a,button{cursor:none;}
 
-    nav { display:flex;align-items:center;justify-content:space-between;padding:1.25rem 5vw;border-bottom:1px solid var(--rule);position:sticky;top:0;background:rgba(248,246,241,.95);backdrop-filter:blur(12px);z-index:100; }
-    .nav-logo { font-size:1rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--ink); }
-    .nav-back { font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ghost);text-decoration:none;transition:color .2s; }
-    .nav-back:hover { color:var(--ink); }
+nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 5vw;background:rgba(248,246,241,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule); }
+.nav-logo { font-size:1rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--ink); }
+.nav-links { display:flex;gap:2.5rem;list-style:none; }
+.nav-links a { font-size:.7rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;color:var(--ink);opacity:.5;transition:opacity .2s; }
+.nav-links a:hover,.nav-links a.active{opacity:1;}
 
-    .hero { padding:4rem 5vw 3rem;border-bottom:1px solid var(--rule); }
-    .hero-label { font-size:.6rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ghost);margin-bottom:1rem; }
-    h1 { font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:1;letter-spacing:-.02em;margin-bottom:1rem; }
-    .hero-sub { font-size:.95rem;color:var(--ghost);line-height:1.7;max-width:500px; }
+.hero { padding:9rem 5vw 4rem;border-bottom:1px solid var(--rule); }
+.hero-eyebrow { font-size:.65rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem; }
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.hero-title { font-size:clamp(3rem,8vw,7rem);font-weight:900;line-height:.95;letter-spacing:-.03em;margin-bottom:1.5rem; }
+.hero-title em{font-style:normal;font-weight:300;}
+.hero-sub { font-size:1rem;color:var(--ghost);max-width:520px;line-height:1.7; }
 
-    /* FILTROS */
-    .filters { padding:1.5rem 5vw;border-bottom:1px solid var(--rule);display:flex;gap:1rem;align-items:center;flex-wrap:wrap; }
-    .filter-label { font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-right:.5rem; }
-    .filter-btn { font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.4rem 1rem;border:1px solid var(--rule);background:none;cursor:pointer;transition:background .2s,border-color .2s;color:var(--ink); }
-    .filter-btn:hover,.filter-btn.active { background:var(--ink);color:var(--paper);border-color:var(--ink); }
-    .search-wrap { margin-left:auto; }
-    .search-input { padding:.4rem 1rem;border:1px solid var(--rule);background:white;font-family:'DM Sans',sans-serif;font-size:.8rem;outline:none;width:220px;transition:border-color .2s; }
-    .search-input:focus { border-color:var(--ink); }
+/* Filtros */
+.filters { padding:2rem 5vw;border-bottom:1px solid var(--rule);display:flex;gap:1rem;align-items:center;flex-wrap:wrap; }
+.filter-label { font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-right:.5rem; }
+.filter-btn { font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.4rem 1rem;border:1px solid var(--rule);background:transparent;color:var(--ghost);transition:all .2s; }
+.filter-btn:hover,.filter-btn.active { border-color:var(--ink);color:var(--ink);background:transparent; }
+.filter-btn.active { background:var(--ink);color:var(--paper);border-color:var(--ink); }
+.search-field { margin-left:auto;display:flex;border:1px solid var(--rule);transition:border-color .2s; }
+.search-field:focus-within{border-color:var(--ink);}
+.search-input { padding:.4rem 1rem;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.8rem;color:var(--ink);width:200px; }
+.search-input::placeholder{color:var(--rule);}
 
-    /* STATS BAR */
-    .stats-bar { padding:.75rem 5vw;border-bottom:1px solid var(--rule);display:flex;gap:3rem; }
-    .stat-item { font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost); }
-    .stat-item strong { color:var(--ink);font-size:.85rem; }
+/* Grid de abogados */
+.lawyers-section { padding:3rem 5vw 7rem; }
+.lawyers-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule); }
+.lawyer-card { padding:2.5rem;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);transition:background .3s;display:flex;flex-direction:column;gap:1.25rem; }
+.lawyer-card:hover{background:var(--warm);}
+.lawyer-card:nth-child(3n){border-right:none;}
 
-    /* GRID */
-    .directory { padding:0;max-width:100%; }
-    .abogado-row { display:grid;grid-template-columns:3rem 1fr auto auto auto;gap:0;align-items:center;padding:1.25rem 5vw;border-bottom:1px solid var(--rule);transition:background .2s;cursor:default; }
-    .abogado-row:hover { background:var(--warm); }
-    .abogado-num { font-size:.7rem;font-weight:700;color:var(--ghost);font-variant-numeric:tabular-nums; }
-    .abogado-info { padding:0 2rem; }
-    .abogado-nombre { font-size:.95rem;font-weight:700;margin-bottom:.2rem; }
-    .abogado-meta { font-size:.75rem;color:var(--ghost);display:flex;gap:1.5rem;flex-wrap:wrap; }
-    .abogado-tag { font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--warm);padding:.15rem .5rem;border:1px solid var(--rule); }
-    .abogado-tag.pro-bono { background:var(--ink);color:var(--paper);border-color:var(--ink); }
-    .abogado-rating { text-align:center;min-width:80px; }
-    .rating-num { font-size:1.5rem;font-weight:900;line-height:1; }
-    .rating-count { font-size:.65rem;color:var(--ghost);letter-spacing:.05em; }
-    .abogado-calls { text-align:center;min-width:80px; }
-    .calls-num { font-size:1.2rem;font-weight:700;line-height:1; }
-    .calls-label { font-size:.65rem;color:var(--ghost); }
-    .abogado-status { text-align:right;min-width:100px; }
-    .status-badge { font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;border:1px solid; }
-    .status-badge.disponible { border-color:var(--ink);color:var(--ink); }
-    .status-badge.ocupado { border-color:var(--ghost);color:var(--ghost); }
-    .status-badge.pro-bono { border-color:var(--ink);background:var(--ink);color:var(--paper); }
+.lawyer-top { display:flex;align-items:flex-start;gap:1.25rem; }
+.lawyer-avatar { width:52px;height:52px;border-radius:50%;background:var(--rule);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:var(--ghost);overflow:hidden; }
+.lawyer-avatar img{width:100%;height:100%;object-fit:cover;}
+.lawyer-info { flex:1;min-width:0; }
+.lawyer-name { font-size:1rem;font-weight:700;line-height:1.2;margin-bottom:.25rem; }
+.lawyer-spec { font-size:.7rem;color:var(--ghost);margin-bottom:.25rem; }
+.lawyer-location { font-size:.65rem;color:var(--ghost);display:flex;align-items:center;gap:.3rem; }
 
-    /* EMPTY */
-    .empty-state { text-align:center;padding:5rem 2rem;color:var(--ghost); }
-    .empty-state h3 { font-size:1.2rem;font-weight:700;margin-bottom:.5rem; }
+.lawyer-rating { display:flex;align-items:center;gap:.5rem; }
+.stars { display:flex;gap:2px; }
+.star { width:10px;height:10px;background:var(--accent);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); }
+.star.empty{background:var(--rule);}
+.rating-num { font-size:.7rem;font-weight:700; }
+.rating-count { font-size:.65rem;color:var(--ghost); }
 
-    /* NOTA */
-    .nota { padding:1.5rem 5vw;border-top:1px solid var(--rule);font-size:.75rem;color:var(--ghost);line-height:1.7; }
-    .nota strong { color:var(--ink); }
+.lawyer-tags { display:flex;gap:.4rem;flex-wrap:wrap; }
+.tag { font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .5rem;border:1px solid var(--rule);color:var(--ghost); }
+.tag.probono { border-color:var(--accent);color:var(--accent); }
 
-    footer { padding:2rem 5vw;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem; }
-    footer p { font-size:.7rem;color:var(--ghost); }
-    .footer-links { display:flex;gap:2rem; }
-    .footer-links a { font-size:.65rem;color:var(--ghost);text-decoration:none; }
-    .footer-links a:hover { color:var(--ink); }
+.lawyer-bio { font-size:.78rem;line-height:1.6;color:#666; }
 
-    @media(max-width:700px) {
-      .abogado-row { grid-template-columns:1fr auto;gap:.5rem; }
-      .abogado-num,.abogado-calls { display:none; }
-      .abogado-info { padding:0; }
-      .filters { gap:.5rem; }
-      .search-wrap { width:100%; }
-      .search-input { width:100%; }
-    }
-  </style>
+.lawyer-footer { display:flex;align-items:center;justify-content:space-between;padding-top:1rem;border-top:1px solid var(--rule);margin-top:auto; }
+.lawyer-disponible { font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;display:flex;align-items:center;gap:.4rem; }
+.disponible-dot { width:6px;height:6px;border-radius:50%;background:#22c55e; }
+.disponible-dot.busy{background:var(--rule);}
+.lawyer-cedula { font-size:.6rem;color:var(--ghost); }
+.lawyer-cta { font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:1px;transition:color .2s,border-color .2s; }
+.lawyer-cta:hover{color:var(--accent);border-color:var(--accent);}
+
+/* Despachos */
+.despachos-section { padding:0 5vw 7rem; }
+.section-label { font-size:.6rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ghost);margin-bottom:2rem;display:flex;align-items:center;gap:1rem; }
+.section-label::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);}
+.section-label::after{content:'';flex:1;height:1px;background:var(--rule);}
+.despachos-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:0;border:1px solid var(--rule); }
+.despacho-card { padding:2.5rem;border-right:1px solid var(--rule);transition:background .3s; }
+.despacho-card:last-child{border-right:none;}
+.despacho-card:hover{background:var(--warm);}
+.despacho-name { font-size:1.3rem;font-weight:700;margin-bottom:.25rem; }
+.despacho-meta { font-size:.7rem;color:var(--ghost);margin-bottom:1rem;display:flex;gap:1rem; }
+.despacho-abogados { font-size:.78rem;color:#555;margin-bottom:1.25rem;line-height:1.6; }
+.despacho-badge { display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:.2rem .5rem;margin-bottom:1rem; }
+
+/* CTA unirse */
+.join-band { background:var(--ink);color:var(--paper);padding:5rem 5vw;display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center;border-top:1px solid var(--rule); }
+.join-band h2 { font-size:clamp(2rem,4vw,3.5rem);font-weight:900;letter-spacing:-.03em;line-height:1; }
+.join-band p { font-size:.85rem;color:rgba(255,255,255,.5);margin-top:.75rem; }
+.btn-white { display:inline-flex;align-items:center;gap:.75rem;background:var(--paper);color:var(--ink);padding:1rem 2rem;font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;transition:opacity .2s;white-space:nowrap; }
+.btn-white:hover{opacity:.85;}
+
+footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem; }
+.footer-brand{font-size:1.2rem;font-weight:700;letter-spacing:.1em;}
+.footer-center{text-align:center;font-size:.65rem;color:var(--ghost);letter-spacing:.1em;line-height:1.8;}
+.footer-links{display:flex;justify-content:flex-end;gap:2rem;}
+.footer-links a{font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ghost);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--ink);}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+@media(max-width:900px){
+  nav{padding:1.25rem 1.5rem;}.nav-links{display:none;}
+  .hero{padding:7rem 1.5rem 3rem;}
+  .lawyers-section,.despachos-section{padding:2rem 1.5rem 4rem;}
+  .lawyers-grid{grid-template-columns:1fr;}
+  .lawyer-card{border-right:none;}
+  .despachos-grid{grid-template-columns:1fr;}
+  .despacho-card{border-right:none;border-bottom:1px solid var(--rule);}
+  .filters{padding:1.5rem;}
+  .search-field{margin-left:0;width:100%;}
+  .search-input{width:100%;}
+  .join-band{grid-template-columns:1fr;gap:2rem;}
+  footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-content:center;}
+}
+</style>
 </head>
 <body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-  <nav>
-    <a href="index.html" class="nav-logo">Agente LFT</a>
-    <a href="index.html" class="nav-back">← Inicio</a>
-  </nav>
+<nav>
+  <a href="index.html" class="nav-logo">Agente LFT</a>
+  <ul class="nav-links">
+    <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+    <li><a href="pricing.html">Planes</a></li>
+    <li><a href="abogados.html" class="active">Abogados</a></li>
+    <li><a href="login.html">Portal</a></li>
+  </ul>
+</nav>
 
-  <div class="hero">
-    <div class="hero-label">Directorio certificado</div>
-    <h1>Abogados<br />verificados.</h1>
-    <p class="hero-sub">Todos los abogados del directorio han sido verificados con cédula profesional e identificación oficial. Calificados por usuarios reales.</p>
+<div class="hero">
+  <div class="hero-eyebrow">Directorio certificado</div>
+  <h1 class="hero-title">Abogados<br /><em>verificados.</em></h1>
+  <p class="hero-sub">Todos los abogados del directorio tienen cédula profesional verificada e INE confirmado. Tu número siempre protegido.</p>
+</div>
+
+<div class="filters">
+  <span class="filter-label">Filtrar</span>
+  <button class="filter-btn active" onclick="filterBy('todos',this)">Todos</button>
+  <button class="filter-btn" onclick="filterBy('disponible',this)">Disponibles</button>
+  <button class="filter-btn" onclick="filterBy('probono',this)">Pro bono</button>
+  <button class="filter-btn" onclick="filterBy('despacho',this)">Despachos</button>
+  <div class="search-field">
+    <input type="text" class="search-input" placeholder="Buscar por nombre o especialidad..." oninput="searchLawyers(this.value)" />
   </div>
+</div>
 
-  <div class="filters">
-    <span class="filter-label">Filtrar:</span>
-    <button class="filter-btn active" onclick="filtrar('todos',this)">Todos</button>
-    <button class="filter-btn" onclick="filtrar('disponible',this)">Disponibles</button>
-    <button class="filter-btn" onclick="filtrar('pro-bono',this)">Pro bono</button>
-    <button class="filter-btn" onclick="filtrar('despido',this)">Despidos</button>
-    <button class="filter-btn" onclick="filtrar('salario',this)">Salarios</button>
-    <button class="filter-btn" onclick="filtrar('imss',this)">IMSS</button>
-    <div class="search-wrap">
-      <input type="text" class="search-input" placeholder="Buscar por nombre o especialidad..." oninput="buscar(this.value)" />
+<section class="lawyers-section">
+  <div class="lawyers-grid reveal" id="lawyers-grid">
+
+    <!-- Abogado 1 -->
+    <div class="lawyer-card" data-tags="disponible">
+      <div class="lawyer-top">
+        <div class="lawyer-avatar">MR</div>
+        <div class="lawyer-info">
+          <div class="lawyer-name">Mario Reyes Ortiz</div>
+          <div class="lawyer-spec">Derecho Laboral · CDMX</div>
+          <div class="lawyer-location">📍 Benito Juárez, CDMX</div>
+        </div>
+      </div>
+      <div class="lawyer-rating">
+        <div class="stars">
+          <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+        </div>
+        <span class="rating-num">4.9</span>
+        <span class="rating-count">(47 opiniones)</span>
+      </div>
+      <div class="lawyer-tags">
+        <span class="tag">Liquidaciones</span>
+        <span class="tag">Finiquitos</span>
+        <span class="tag">IMSS</span>
+        <span class="tag probono">Pro bono</span>
+      </div>
+      <div class="lawyer-bio">Especialista en conflictos laborales con más de 12 años de experiencia. Asesoría clara y sin rodeos.</div>
+      <div class="lawyer-footer">
+        <div>
+          <div class="lawyer-disponible"><div class="disponible-dot"></div>Disponible ahora</div>
+          <div class="lawyer-cedula">Céd. 3847291</div>
+        </div>
+        <a href="#" class="lawyer-cta">Ver perfil →</a>
+      </div>
+    </div>
+
+    <!-- Abogado 2 -->
+    <div class="lawyer-card" data-tags="probono disponible">
+      <div class="lawyer-top">
+        <div class="lawyer-avatar">AL</div>
+        <div class="lawyer-info">
+          <div class="lawyer-name">Ana Lucía Vázquez</div>
+          <div class="lawyer-spec">Derecho Laboral · Guadalajara</div>
+          <div class="lawyer-location">📍 Zapopan, Jalisco</div>
+        </div>
+      </div>
+      <div class="lawyer-rating">
+        <div class="stars">
+          <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star empty"></div>
+        </div>
+        <span class="rating-num">4.7</span>
+        <span class="rating-count">(32 opiniones)</span>
+      </div>
+      <div class="lawyer-tags">
+        <span class="tag">Despidos</span>
+        <span class="tag">Horas extra</span>
+        <span class="tag probono">Pro bono</span>
+      </div>
+      <div class="lawyer-bio">Defensora de derechos laborales con enfoque en trabajadores informales y del sector servicios.</div>
+      <div class="lawyer-footer">
+        <div>
+          <div class="lawyer-disponible"><div class="disponible-dot"></div>Disponible ahora</div>
+          <div class="lawyer-cedula">Céd. 5129384</div>
+        </div>
+        <a href="#" class="lawyer-cta">Ver perfil →</a>
+      </div>
+    </div>
+
+    <!-- Abogado 3 -->
+    <div class="lawyer-card" data-tags="">
+      <div class="lawyer-top">
+        <div class="lawyer-avatar">JT</div>
+        <div class="lawyer-info">
+          <div class="lawyer-name">Jorge Torres Medina</div>
+          <div class="lawyer-spec">Derecho Laboral · CDMX</div>
+          <div class="lawyer-location">📍 Cuauhtémoc, CDMX</div>
+        </div>
+      </div>
+      <div class="lawyer-rating">
+        <div class="stars">
+          <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star empty"></div>
+        </div>
+        <span class="rating-num">4.6</span>
+        <span class="rating-count">(28 opiniones)</span>
+      </div>
+      <div class="lawyer-tags">
+        <span class="tag">Contratos</span>
+        <span class="tag">Prima vacacional</span>
+        <span class="tag">Aguinaldo</span>
+      </div>
+      <div class="lawyer-bio">Abogado corporativo especializado en relaciones laborales. Atiende tanto a trabajadores como a empresas.</div>
+      <div class="lawyer-footer">
+        <div>
+          <div class="lawyer-disponible"><div class="disponible-dot busy"></div>No disponible</div>
+          <div class="lawyer-cedula">Céd. 7234891</div>
+        </div>
+        <a href="#" class="lawyer-cta">Ver perfil →</a>
+      </div>
+    </div>
+
+    <!-- Abogado 4 -->
+    <div class="lawyer-card" data-tags="disponible despacho">
+      <div class="lawyer-top">
+        <div class="lawyer-avatar">SC</div>
+        <div class="lawyer-info">
+          <div class="lawyer-name">Sofía Castillo Ramos</div>
+          <div class="lawyer-spec">Derecho Laboral · Monterrey</div>
+          <div class="lawyer-location">📍 San Pedro, N.L.</div>
+        </div>
+      </div>
+      <div class="lawyer-rating">
+        <div class="stars">
+          <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+        </div>
+        <span class="rating-num">5.0</span>
+        <span class="rating-count">(19 opiniones)</span>
+      </div>
+      <div class="lawyer-tags">
+        <span class="tag">Despacho</span>
+        <span class="tag">Empresas</span>
+        <span class="tag">INFONAVIT</span>
+      </div>
+      <div class="lawyer-bio">Socia de Castillo & Asociados. Especialista en derecho laboral corporativo y relaciones colectivas.</div>
+      <div class="lawyer-footer">
+        <div>
+          <div class="lawyer-disponible"><div class="disponible-dot"></div>Disponible ahora</div>
+          <div class="lawyer-cedula">Céd. 6182947</div>
+        </div>
+        <a href="#" class="lawyer-cta">Ver perfil →</a>
+      </div>
+    </div>
+
+    <!-- Abogado 5 -->
+    <div class="lawyer-card" data-tags="probono">
+      <div class="lawyer-top">
+        <div class="lawyer-avatar">RM</div>
+        <div class="lawyer-info">
+          <div class="lawyer-name">Roberto Mendoza Gil</div>
+          <div class="lawyer-spec">Derecho Laboral · CDMX</div>
+          <div class="lawyer-location">📍 Iztapalapa, CDMX</div>
+        </div>
+      </div>
+      <div class="lawyer-rating">
+        <div class="stars">
+          <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star empty"></div>
+        </div>
+        <span class="rating-num">4.5</span>
+        <span class="rating-count">(61 opiniones)</span>
+      </div>
+      <div class="lawyer-tags">
+        <span class="tag">Trabajadores domésticos</span>
+        <span class="tag probono">Pro bono</span>
+      </div>
+      <div class="lawyer-bio">Comprometido con el acceso a la justicia para trabajadores en zonas de alta marginación. Más de 200 casos atendidos.</div>
+      <div class="lawyer-footer">
+        <div>
+          <div class="lawyer-disponible"><div class="disponible-dot busy"></div>No disponible</div>
+          <div class="lawyer-cedula">Céd. 4928137</div>
+        </div>
+        <a href="#" class="lawyer-cta">Ver perfil →</a>
+      </div>
+    </div>
+
+    <!-- Abogado 6 -->
+    <div class="lawyer-card" data-tags="disponible">
+      <div class="lawyer-top">
+        <div class="lawyer-avatar">LF</div>
+        <div class="lawyer-info">
+          <div class="lawyer-name">Laura Fuentes Ibarra</div>
+          <div class="lawyer-spec">Derecho Laboral · Puebla</div>
+          <div class="lawyer-location">📍 Centro, Puebla</div>
+        </div>
+      </div>
+      <div class="lawyer-rating">
+        <div class="stars">
+          <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div><div class="star empty"></div>
+        </div>
+        <span class="rating-num">4.8</span>
+        <span class="rating-count">(24 opiniones)</span>
+      </div>
+      <div class="lawyer-tags">
+        <span class="tag">Acoso laboral</span>
+        <span class="tag">Maternidad</span>
+        <span class="tag">Igualdad</span>
+      </div>
+      <div class="lawyer-bio">Especialista en derechos de trabajadoras, acoso laboral y discriminación. Enfoque humano y resolutivo.</div>
+      <div class="lawyer-footer">
+        <div>
+          <div class="lawyer-disponible"><div class="disponible-dot"></div>Disponible ahora</div>
+          <div class="lawyer-cedula">Céd. 8374621</div>
+        </div>
+        <a href="#" class="lawyer-cta">Ver perfil →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Despachos -->
+<section class="despachos-section">
+  <div class="section-label">Despachos certificados</div>
+  <div class="despachos-grid reveal">
+    <div class="despacho-card">
+      <div class="despacho-badge">Despacho Certificado</div>
+      <div class="despacho-name">Castillo & Asociados</div>
+      <div class="despacho-meta"><span>📍 Monterrey, N.L.</span><span>8 abogados</span></div>
+      <div class="despacho-abogados">Especialistas en derecho laboral corporativo, relaciones colectivas e INFONAVIT. Atienden empresas y trabajadores del norte del país.</div>
+      <a href="#" class="lawyer-cta">Ver despacho →</a>
+    </div>
+    <div class="despacho-card">
+      <div class="despacho-badge">Despacho Certificado</div>
+      <div class="despacho-name">Laboral MX</div>
+      <div class="despacho-meta"><span>📍 CDMX</span><span>5 abogados</span></div>
+      <div class="despacho-abogados">Despacho boutique enfocado en trabajadores de tecnología, startups y economía digital. Contratos, stock options y liquidaciones.</div>
+      <a href="#" class="lawyer-cta">Ver despacho →</a>
     </div>
   </div>
+</section>
 
-  <div class="stats-bar">
-    <div class="stat-item"><strong id="total-count">0</strong> abogados registrados</div>
-    <div class="stat-item"><strong id="disponible-count">0</strong> disponibles ahora</div>
-    <div class="stat-item"><strong id="probono-count">0</strong> con pro bono activo</div>
+<!-- CTA -->
+<div class="join-band">
+  <div>
+    <h2>¿Eres abogado<br />laboralista?</h2>
+    <p>Únete al directorio. Alta gratuita. Comisión solo cuando atiendes.</p>
   </div>
+  <a href="registro-abogado.html" class="btn-white">Solicitar alta →</a>
+</div>
 
-  <div class="directory" id="directory">
-    <!-- Generado por JS -->
+<footer>
+  <div class="footer-brand">Agente LFT</div>
+  <div class="footer-center">© 2026 Disrupting MEX · Ciudad de México<br />Todos los derechos reservados</div>
+  <div class="footer-links">
+    <a href="pricing.html">Planes</a>
+    <a href="terminos.html">Términos</a>
+    <a href="privacidad.html">Privacidad</a>
   </div>
+</footer>
 
-  <div class="nota">
-    <strong>Privacidad:</strong> Los números de teléfono de todos los abogados están protegidos. Las llamadas se realizan exclusivamente a través de WhatsApp de Agente LFT. Ningún usuario tiene acceso directo al número personal del abogado.
-    <br /><br />
-    ¿Eres abogado laboralista? <a href="registro-abogado.html" style="color:var(--ink);font-weight:700;">Solicita tu alta →</a>
-  </div>
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animateRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animateRing);}
+animateRing();
 
-  <footer>
-    <p>© 2026 Disrupting MEX · Agente LFT</p>
-    <div class="footer-links">
-      <a href="index.html">Inicio</a>
-      <a href="terminos.html">Términos</a>
-      <a href="privacidad.html">Privacidad</a>
-    </div>
-  </footer>
+let activeFilter='todos';
 
-  <script>
-    // Datos de ejemplo — en producción esto vendrá de la API/N8N
-    const abogados = [
-      {
-        id: 1,
-        nombre: 'Lic. Ana Martínez Reyes',
-        ciudad: 'CDMX',
-        experiencia: '12 años',
-        especialidades: ['Despidos', 'Liquidaciones'],
-        calificacion: 4.9,
-        totalCalificaciones: 47,
-        llamadasAtendidas: 83,
-        estado: 'disponible',
-        proBono: true
-      },
-      {
-        id: 2,
-        nombre: 'Lic. Carlos Hernández López',
-        ciudad: 'Guadalajara',
-        experiencia: '8 años',
-        especialidades: ['IMSS', 'Seguridad social'],
-        calificacion: 4.7,
-        totalCalificaciones: 31,
-        llamadasAtendidas: 56,
-        estado: 'disponible',
-        proBono: false
-      },
-      {
-        id: 3,
-        nombre: 'Lic. Patricia Gómez Fuentes',
-        ciudad: 'CDMX',
-        experiencia: '15 años',
-        especialidades: ['Acoso laboral', 'Derecho colectivo'],
-        calificacion: 5.0,
-        totalCalificaciones: 22,
-        llamadasAtendidas: 38,
-        estado: 'pro-bono',
-        proBono: true
-      },
-      {
-        id: 4,
-        nombre: 'Lic. Roberto Silva Castañeda',
-        ciudad: 'Monterrey',
-        experiencia: '6 años',
-        especialidades: ['Contratos', 'Despidos'],
-        calificacion: 4.5,
-        totalCalificaciones: 18,
-        llamadasAtendidas: 29,
-        estado: 'ocupado',
-        proBono: false
-      },
-      {
-        id: 5,
-        nombre: 'Lic. Daniela Torres Vega',
-        ciudad: 'CDMX',
-        experiencia: '10 años',
-        especialidades: ['Salarios', 'PTU'],
-        calificacion: 4.8,
-        totalCalificaciones: 35,
-        llamadasAtendidas: 61,
-        estado: 'disponible',
-        proBono: true
-      },
-      {
-        id: 6,
-        nombre: 'Lic. Miguel Ángel Ramos Cruz',
-        ciudad: 'Puebla',
-        experiencia: '9 años',
-        especialidades: ['Maternidad', 'Discriminación'],
-        calificacion: 4.6,
-        totalCalificaciones: 14,
-        llamadasAtendidas: 22,
-        estado: 'disponible',
-        proBono: false
-      }
-    ];
+function filterBy(filter, btn){
+  activeFilter=filter;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
 
-    let filtroActual = 'todos';
-    let busquedaActual = '';
+function searchLawyers(query){applyFilters(query);}
 
-    function renderizar() {
-      const container = document.getElementById('directory');
-      let lista = [...abogados];
+function applyFilters(query=''){
+  const q=query.toLowerCase();
+  document.querySelectorAll('.lawyer-card').forEach(card=>{
+    const tags=card.dataset.tags||'';
+    const text=card.textContent.toLowerCase();
+    const matchFilter=activeFilter==='todos'||tags.includes(activeFilter);
+    const matchSearch=!q||text.includes(q);
+    card.style.display=(matchFilter&&matchSearch)?'flex':'none';
+  });
+}
 
-      // Ordenar por calificación
-      lista.sort((a, b) => b.calificacion - a.calificacion || b.totalCalificaciones - a.totalCalificaciones);
-
-      // Filtrar
-      if (filtroActual !== 'todos') {
-        lista = lista.filter(a => {
-          if (filtroActual === 'disponible') return a.estado === 'disponible';
-          if (filtroActual === 'pro-bono') return a.proBono;
-          return a.especialidades.some(e => e.toLowerCase().includes(filtroActual));
-        });
-      }
-
-      // Buscar
-      if (busquedaActual) {
-        const q = busquedaActual.toLowerCase();
-        lista = lista.filter(a =>
-          a.nombre.toLowerCase().includes(q) ||
-          a.especialidades.some(e => e.toLowerCase().includes(q)) ||
-          a.ciudad.toLowerCase().includes(q)
-        );
-      }
-
-      // Actualizar contadores
-      document.getElementById('total-count').textContent = abogados.length;
-      document.getElementById('disponible-count').textContent = abogados.filter(a => a.estado === 'disponible').length;
-      document.getElementById('probono-count').textContent = abogados.filter(a => a.proBono).length;
-
-      if (lista.length === 0) {
-        container.innerHTML = `<div class="empty-state"><h3>Sin resultados</h3><p>Intenta con otro filtro o búsqueda.</p></div>`;
-        return;
-      }
-
-      container.innerHTML = lista.map((a, i) => {
-        const estadoLabel = a.estado === 'disponible' ? 'Disponible' : a.estado === 'pro-bono' ? 'Pro bono' : 'Ocupado';
-        const tags = a.especialidades.map(e => `<span class="abogado-tag${a.proBono && e === a.especialidades[0] ? ' pro-bono' : ''}">${e}</span>`).join('');
-        return `
-          <div class="abogado-row" data-estado="${a.estado}" data-especialidades="${a.especialidades.join(',').toLowerCase()}" data-probono="${a.proBono}">
-            <div class="abogado-num">${String(i + 1).padStart(2, '0')}</div>
-            <div class="abogado-info">
-              <div class="abogado-nombre">${a.nombre}</div>
-              <div class="abogado-meta">
-                <span>${a.ciudad}</span>
-                <span>${a.experiencia} de experiencia</span>
-                <span>${tags}</span>
-              </div>
-            </div>
-            <div class="abogado-rating">
-              <div class="rating-num">${a.calificacion.toFixed(1)}</div>
-              <div class="rating-count">${a.totalCalificaciones} reseñas</div>
-            </div>
-            <div class="abogado-calls">
-              <div class="calls-num">${a.llamadasAtendidas}</div>
-              <div class="calls-label">llamadas</div>
-            </div>
-            <div class="abogado-status">
-              <span class="status-badge ${a.estado}">${estadoLabel}</span>
-            </div>
-          </div>`;
-      }).join('');
-    }
-
-    function filtrar(tipo, btn) {
-      filtroActual = tipo;
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderizar();
-    }
-
-    function buscar(q) {
-      busquedaActual = q;
-      renderizar();
-    }
-
-    renderizar();
-  </script>
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver(e=>{e.forEach(r=>{if(r.isIntersecting){r.target.classList.add('visible');io.unobserve(r.target);}});},{threshold:.1});
+reveals.forEach(r=>io.observe(r));
+</script>
 </body>
 </html>
