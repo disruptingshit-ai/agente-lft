@@ -85,6 +85,9 @@ section { padding:7rem 5vw;border-top:1px solid var(--rule); }
 .partner-features li { font-size:.8rem;color:#555;padding:.5rem 0;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:.75rem; }
 .partner-features li::before{content:'·';color:var(--ink);font-size:1.2rem;flex-shrink:0;margin-top:-.1rem;}
 .partner-price-note { font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.25rem; }
+.partner-features { list-style:none; }
+.partner-features li { font-size:.8rem;color:#555;padding:.45rem 0;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:.6rem; }
+.partner-features li::before{content:'—';color:var(--ghost);font-size:.7rem;flex-shrink:0;margin-top:.1rem;}
 .privacy-note { background:var(--warm);padding:2rem 5vw;border-top:1px solid var(--rule);display:flex;align-items:flex-start;gap:2rem; }
 .privacy-icon { width:20px;height:20px;min-width:20px;border:1px solid var(--ink);border-radius:50%;margin-top:.15rem; }
 .privacy-text { font-size:.8rem;line-height:1.7;color:#666; }
@@ -109,6 +112,8 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
 .reveal.visible{opacity:1;transform:none;}
 @media(max-width:900px){
 nav{padding:1.25rem 1.5rem;}.nav-links{display:none;}
+[style*="grid-template-columns:1fr 1fr 1fr"]{display:block !important;}
+[style*="grid-template-columns:1fr 1fr 1fr"] > div{border-right:none !important;border-bottom:1px solid var(--rule);}
 section,.impact-section{padding:4rem 1.5rem;}
 .hero{padding:0 1.5rem;}.hero-title{font-size:clamp(3rem,12vw,5rem);}.hero-bg-num{display:none;}
 .hero-stats{grid-template-columns:repeat(3,1fr);}
@@ -131,10 +136,10 @@ footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-conten
 <nav>
   <a href="index.html" class="nav-logo">Agente LFT</a>
   <ul class="nav-links">
-    <li><a href="#como-funciona">Cómo funciona</a></li>
-    <li><a href="#planes">Planes</a></li>
-    <li><a href="#partners">Aliados</a></li>
-    <li><a href="#impacto">Impacto</a></li>
+    <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+    <li><a href="pricing.html">Planes</a></li>
+    <li><a href="index.html#partners">Aliados</a></li>
+    <li><a href="index.html#impacto">Impacto</a></li>
     <li><a href="abogados.html">Abogados</a></li>
     <li><a href="login.html">Portal</a></li>
   </ul>
@@ -257,38 +262,76 @@ footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-conten
 <section id="partners">
   <div class="section-label">Para aliados</div>
   <h2 class="section-title reveal">El estatus que<br /><em>su trabajo</em> merece.</h2>
-  <div class="partner-grid reveal">
-    <div class="partner-card">
-      <div class="partner-tag">Aliado Independiente</div>
-      <h3 class="partner-name">Abogado Certificado</h3>
-      <p class="partner-desc">Forme parte del directorio de Agente LFT. Reciba clientes calificados directamente desde WhatsApp. Sin invertir en publicidad. Sin perseguir clientes.</p>
-      <ul class="partner-features">
-        <li>Alta 100% gratuita con verificación de cédula e INE</li>
-        <li>Acceso inmediato a clientes calificados desde WhatsApp</li>
-        <li>Los clientes que cierres fuera de la plataforma son completamente tuyos</li>
-        <li>Número siempre privado — sin acoso posterior</li>
-        <li>Ranking público por calificación de usuarios</li>
-        <li>Pro bono opcional para visibilidad preferente en el catálogo</li>
-        <li>Baja inmediata ante quejas fundadas</li>
-      </ul>
-      <div class="partner-price-note">Alta gratuita</div>
-      <a href="registro-abogado.html" class="plan-btn">Solicitar alta →</a>
+
+  <!-- Abogado independiente — full width -->
+  <div class="reveal" style="margin-top:3rem;border:1px solid var(--rule);">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--rule);">
+      <div style="padding:2.5rem 3rem;border-right:1px solid var(--rule);">
+        <div class="partner-tag">Aliado Independiente</div>
+        <h3 class="partner-name">Abogado<br />Certificado</h3>
+        <p style="font-size:.82rem;line-height:1.7;color:#666;margin-top:.75rem;">Clientes calificados directo a su WhatsApp. Sin publicidad. Sin perseguir casos.</p>
+        <div style="margin-top:1.5rem;">
+          <a href="registro-abogado.html" class="plan-btn" style="display:inline-block;padding:.75rem 1.5rem;">Solicitar alta →</a>
+        </div>
+      </div>
+      <div style="padding:2.5rem 3rem;border-right:1px solid var(--rule);">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.25rem;">Para el abogado</div>
+        <ul class="partner-features">
+          <li>Alta gratuita con verificación de cédula e INE</li>
+          <li>Clientes calificados directo desde WhatsApp</li>
+          <li>Número siempre privado y protegido</li>
+          <li>Ranking público por calificación</li>
+          <li>Pro bono = visibilidad preferente</li>
+          <li>Baja inmediata ante quejas fundadas</li>
+        </ul>
+      </div>
+      <div style="padding:2.5rem 3rem;">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.25rem;">Para el cliente</div>
+        <ul class="partner-features">
+          <li>Asesoría de 20 min — $150 MXN</li>
+          <li>Número del abogado siempre protegido</li>
+          <li>Calificación visible antes de contactar</li>
+          <li>Contacto 100% a través de la plataforma</li>
+          <li>Conexión on demand desde WhatsApp</li>
+        </ul>
+      </div>
     </div>
-    <div class="partner-card">
-      <div class="partner-tag">Aliado Despacho</div>
-      <h3 class="partner-name">Despacho Certificado</h3>
-      <p class="partner-desc">Integre Agente LFT a su operación. Filtre el 80% de consultas simples, reciba clientes nuevos y enfoque a su equipo en los casos que importan.</p>
-      <ul class="partner-features">
-        <li>Tecnología Agente LFT bajo la marca de su despacho</li>
-        <li>Registre y certifique a todos sus abogados en la plataforma</li>
-        <li>Números de todos los abogados siempre protegidos</li>
-        <li>Pool de respaldo automático cuando no haya disponibilidad</li>
-        <li>Los mejor calificados tienen prioridad en el pool general</li>
-        <li>Sello de despacho certificado Agente LFT</li>
-        <li>Fuente constante de clientes nuevos vía plataforma</li>
-      </ul>
-      <div class="partner-price-note">Membresía mensual</div>
-      <a href="registro-despacho.html" class="plan-btn">Registrar despacho →</a>
+
+    <!-- Despacho certificado — full width -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;">
+      <div style="padding:2.5rem 3rem;border-right:1px solid var(--rule);background:var(--ink);color:var(--paper);">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1.5rem;">Aliado Despacho</div>
+        <h3 style="font-size:2rem;font-weight:700;line-height:1.1;margin-bottom:.75rem;">Despacho<br />Certificado</h3>
+        <p style="font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.5);margin-top:.75rem;">Tecnología Agente LFT bajo su marca. Filtre consultas simples, reciba clientes nuevos.</p>
+        <div style="margin-top:1.5rem;">
+          <a href="registro-despacho.html" style="display:inline-block;padding:.75rem 1.5rem;border:1px solid rgba(255,255,255,.3);font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;color:var(--paper);transition:border-color .2s;">Registrar despacho →</a>
+        </div>
+        <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.1);">
+          <div style="font-size:1.8rem;font-weight:900;color:var(--paper);">$500</div>
+          <div style="font-size:.6rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:.2rem;">MXN / mes base</div>
+        </div>
+      </div>
+      <div style="padding:2.5rem 3rem;border-right:1px solid var(--rule);">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.25rem;">Para el despacho</div>
+        <ul class="partner-features">
+          <li>Tecnología bajo la marca del despacho</li>
+          <li>Abogados propios certificados en plataforma</li>
+          <li>Pool de respaldo automático</li>
+          <li>Sello de despacho certificado Agente LFT</li>
+          <li>Clientes nuevos vía plataforma</li>
+          <li>Números de todos los abogados protegidos</li>
+        </ul>
+      </div>
+      <div style="padding:2.5rem 3rem;">
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.25rem;">Ventajas operativas</div>
+        <ul class="partner-features">
+          <li>Filtra el 80% de consultas simples automáticamente</li>
+          <li>Los mejor calificados tienen prioridad en el pool</li>
+          <li>Baja de abogados ante quejas fundadas</li>
+          <li>Dashboard de métricas por abogado</li>
+          <li>Facturación mensual vía Stripe</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
