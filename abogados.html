@@ -33,6 +33,8 @@ nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:c
 .filter-btn { font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.4rem 1rem;border:1px solid var(--rule);background:transparent;color:var(--ghost);transition:all .2s; }
 .filter-btn:hover,.filter-btn.active { border-color:var(--ink);color:var(--ink);background:transparent; }
 .filter-btn.active { background:var(--ink);color:var(--paper);border-color:var(--ink); }
+.rating-filter { padding:.4rem .75rem;border:1px solid var(--rule);background:var(--paper);font-family:'DM Sans',sans-serif;font-size:.65rem;color:var(--ink);outline:none;transition:border-color .2s; }
+.rating-filter:focus{border-color:var(--ink);}
 .search-field { margin-left:auto;display:flex;border:1px solid var(--rule);transition:border-color .2s; }
 .search-field:focus-within{border-color:var(--ink);}
 .search-input { padding:.4rem 1rem;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:.8rem;color:var(--ink);width:200px; }
@@ -147,6 +149,12 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
   <button class="filter-btn" onclick="filterBy('disponible',this)">Disponibles</button>
   <button class="filter-btn" onclick="filterBy('probono',this)">Pro bono</button>
   <button class="filter-btn" onclick="filterBy('despacho',this)">Despachos</button>
+  <select class="rating-filter" onchange="filterByRating(this.value)">
+    <option value="0">Todas las calificaciones</option>
+    <option value="5">⭐ 5.0</option>
+    <option value="4.7">⭐ 4.7+</option>
+    <option value="4.5">⭐ 4.5+</option>
+  </select>
   <div class="search-field">
     <input type="text" class="search-input" placeholder="Buscar por nombre o especialidad..." oninput="searchLawyers(this.value)" />
   </div>
@@ -156,7 +164,7 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
   <div class="lawyers-grid reveal" id="lawyers-grid">
 
     <!-- Abogado 1 -->
-    <div class="lawyer-card" data-tags="disponible">
+    <div class="lawyer-card" data-tags="disponible" data-rating="4.9">
       <div class="lawyer-top">
         <div class="lawyer-avatar">MR</div>
         <div class="lawyer-info">
@@ -184,12 +192,12 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
           <div class="lawyer-disponible"><div class="disponible-dot"></div>Disponible ahora</div>
           <div class="lawyer-cedula">Céd. 3847291</div>
         </div>
-        <a href="#" class="lawyer-cta">Ver perfil →</a>
+        <a href="perfil-abogado.html" class="lawyer-cta">Ver perfil →</a>
       </div>
     </div>
 
     <!-- Abogado 2 -->
-    <div class="lawyer-card" data-tags="probono disponible">
+    <div class="lawyer-card" data-tags="probono disponible" data-rating="4.7">
       <div class="lawyer-top">
         <div class="lawyer-avatar">AL</div>
         <div class="lawyer-info">
@@ -216,12 +224,12 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
           <div class="lawyer-disponible"><div class="disponible-dot"></div>Disponible ahora</div>
           <div class="lawyer-cedula">Céd. 5129384</div>
         </div>
-        <a href="#" class="lawyer-cta">Ver perfil →</a>
+        <a href="perfil-abogado.html" class="lawyer-cta">Ver perfil →</a>
       </div>
     </div>
 
     <!-- Abogado 3 -->
-    <div class="lawyer-card" data-tags="">
+    <div class="lawyer-card" data-tags="" data-rating="4.6">
       <div class="lawyer-top">
         <div class="lawyer-avatar">JT</div>
         <div class="lawyer-info">
@@ -248,12 +256,12 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
           <div class="lawyer-disponible"><div class="disponible-dot busy"></div>No disponible</div>
           <div class="lawyer-cedula">Céd. 7234891</div>
         </div>
-        <a href="#" class="lawyer-cta">Ver perfil →</a>
+        <a href="perfil-abogado.html" class="lawyer-cta">Ver perfil →</a>
       </div>
     </div>
 
     <!-- Abogado 4 -->
-    <div class="lawyer-card" data-tags="disponible despacho">
+    <div class="lawyer-card" data-tags="disponible despacho" data-rating="5.0">
       <div class="lawyer-top">
         <div class="lawyer-avatar">SC</div>
         <div class="lawyer-info">
@@ -280,12 +288,12 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
           <div class="lawyer-disponible"><div class="disponible-dot"></div>Disponible ahora</div>
           <div class="lawyer-cedula">Céd. 6182947</div>
         </div>
-        <a href="#" class="lawyer-cta">Ver perfil →</a>
+        <a href="perfil-abogado.html" class="lawyer-cta">Ver perfil →</a>
       </div>
     </div>
 
     <!-- Abogado 5 -->
-    <div class="lawyer-card" data-tags="probono">
+    <div class="lawyer-card" data-tags="probono" data-rating="4.5">
       <div class="lawyer-top">
         <div class="lawyer-avatar">RM</div>
         <div class="lawyer-info">
@@ -311,12 +319,12 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
           <div class="lawyer-disponible"><div class="disponible-dot busy"></div>No disponible</div>
           <div class="lawyer-cedula">Céd. 4928137</div>
         </div>
-        <a href="#" class="lawyer-cta">Ver perfil →</a>
+        <a href="perfil-abogado.html" class="lawyer-cta">Ver perfil →</a>
       </div>
     </div>
 
     <!-- Abogado 6 -->
-    <div class="lawyer-card" data-tags="disponible">
+    <div class="lawyer-card" data-tags="disponible" data-rating="4.8">
       <div class="lawyer-top">
         <div class="lawyer-avatar">LF</div>
         <div class="lawyer-info">
@@ -343,7 +351,7 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
           <div class="lawyer-disponible"><div class="disponible-dot"></div>Disponible ahora</div>
           <div class="lawyer-cedula">Céd. 8374621</div>
         </div>
-        <a href="#" class="lawyer-cta">Ver perfil →</a>
+        <a href="perfil-abogado.html" class="lawyer-cta">Ver perfil →</a>
       </div>
     </div>
 
@@ -359,14 +367,14 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
       <div class="despacho-name">Castillo & Asociados</div>
       <div class="despacho-meta"><span>📍 Monterrey, N.L.</span><span>8 abogados</span></div>
       <div class="despacho-abogados">Especialistas en derecho laboral corporativo, relaciones colectivas e INFONAVIT. Atienden empresas y trabajadores del norte del país.</div>
-      <a href="#" class="lawyer-cta">Ver despacho →</a>
+      <a href="registro-despacho.html" class="lawyer-cta">Ver despacho →</a>
     </div>
     <div class="despacho-card">
       <div class="despacho-badge">Despacho Certificado</div>
       <div class="despacho-name">Laboral MX</div>
       <div class="despacho-meta"><span>📍 CDMX</span><span>5 abogados</span></div>
       <div class="despacho-abogados">Despacho boutique enfocado en trabajadores de tecnología, startups y economía digital. Contratos, stock options y liquidaciones.</div>
-      <a href="#" class="lawyer-cta">Ver despacho →</a>
+      <a href="registro-despacho.html" class="lawyer-cta">Ver despacho →</a>
     </div>
   </div>
 </section>
@@ -385,8 +393,8 @@ footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-tem
   <div class="footer-center">© 2026 Disrupting MEX · Ciudad de México<br />Todos los derechos reservados</div>
   <div class="footer-links">
     <a href="pricing.html">Planes</a>
-    <a href="terminos.html">Términos</a>
-    <a href="privacidad.html">Privacidad</a>
+    <a href="legal.html">Términos</a>
+    <a href="legal.html">Privacidad</a>
   </div>
 </footer>
 
@@ -408,14 +416,23 @@ function filterBy(filter, btn){
 
 function searchLawyers(query){applyFilters(query);}
 
+let activeRating = 0;
+
+function filterByRating(val){
+  activeRating = parseFloat(val) || 0;
+  applyFilters(document.querySelector('.search-input')?.value || '');
+}
+
 function applyFilters(query=''){
   const q=query.toLowerCase();
   document.querySelectorAll('.lawyer-card').forEach(card=>{
     const tags=card.dataset.tags||'';
     const text=card.textContent.toLowerCase();
+    const rating=parseFloat(card.dataset.rating)||0;
     const matchFilter=activeFilter==='todos'||tags.includes(activeFilter);
     const matchSearch=!q||text.includes(q);
-    card.style.display=(matchFilter&&matchSearch)?'flex':'none';
+    const matchRating=activeRating===0||rating>=activeRating;
+    card.style.display=(matchFilter&&matchSearch&&matchRating)?'flex':'none';
   });
 }
 
