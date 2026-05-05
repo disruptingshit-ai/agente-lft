@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mi Perfil — Agente LFT</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --ink: #0d0d0d; --paper: #f8f6f1; --warm: #f0ede6; --rule: #d8d4cc; --ghost: #b0aba0; --accent: #E8572A; }
+html { font-size: 16px; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; cursor: none; min-height: 100vh; display: grid; grid-template-columns: 260px 1fr; }
+.cursor { width:8px;height:8px;background:var(--ink);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%); }
+.cursor-ring { width:32px;height:32px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.7; }
+a,button{cursor:none;}
+
+/* Sidebar */
+.sidebar { background:var(--ink);color:var(--paper);padding:2rem;display:flex;flex-direction:column;gap:2rem;position:sticky;top:0;height:100vh;overflow-y:auto; }
+.sidebar-logo { font-size:.85rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--paper);border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:1.5rem; }
+.sidebar-user { display:flex;align-items:center;gap:.75rem; }
+.sidebar-avatar { width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;flex-shrink:0; }
+.sidebar-name { font-size:.82rem;font-weight:500;line-height:1.3; }
+.sidebar-role { font-size:.6rem;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase; }
+.sidebar-nav { display:flex;flex-direction:column;gap:.25rem;flex:1; }
+.nav-item { display:flex;align-items:center;gap:.75rem;padding:.625rem .75rem;font-size:.72rem;font-weight:500;letter-spacing:.05em;color:rgba(255,255,255,.4);text-decoration:none;border-left:2px solid transparent;transition:all .2s; }
+.nav-item:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.05);}
+.nav-item.active{color:var(--paper);border-left-color:var(--accent);background:rgba(255,255,255,.07);}
+.nav-icon{font-size:.9rem;width:16px;text-align:center;}
+.nav-section{font-size:.55rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:.5rem .75rem;margin-top:.75rem;}
+.sidebar-bottom { border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem; }
+.sidebar-bottom a { display:flex;align-items:center;gap:.75rem;font-size:.72rem;color:rgba(255,255,255,.3);text-decoration:none;padding:.5rem 0;transition:color .2s; }
+.sidebar-bottom a:hover{color:rgba(255,255,255,.7);}
+
+/* Main content */
+.main { padding:2.5rem;overflow-y:auto; }
+.page-header { display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--rule); }
+.page-title { font-size:1.5rem;font-weight:900;letter-spacing:-.02em; }
+.page-sub { font-size:.78rem;color:var(--ghost);margin-top:.25rem; }
+.btn-save { padding:.75rem 1.5rem;background:var(--ink);color:var(--paper);font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border:none;transition:background .2s; }
+.btn-save:hover{background:#2a2a2a;}
+.btn-save.saved{background:var(--accent);}
+
+/* Stats rápidas */
+.quick-stats { display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);margin-bottom:2rem; }
+.qstat { padding:1.25rem 1.5rem;border-right:1px solid var(--rule); }
+.qstat:last-child{border-right:none;}
+.qstat-num { font-size:1.8rem;font-weight:900;line-height:1; }
+.qstat-label { font-size:.6rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ghost);margin-top:.2rem; }
+.qstat-delta { font-size:.65rem;color:#22c55e;margin-top:.15rem; }
+
+/* Secciones del perfil */
+.profile-grid { display:grid;grid-template-columns:1fr 1fr;gap:1.5rem; }
+.profile-grid.full{grid-template-columns:1fr;}
+.section-card { border:1px solid var(--rule);padding:1.75rem; }
+.section-card-title { font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem; }
+.section-card-title::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);}
+
+/* Avatar upload */
+.avatar-section { display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem; }
+.avatar-big { width:72px;height:72px;border-radius:50%;background:var(--warm);border:1px solid var(--rule);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;color:var(--ghost);flex-shrink:0; }
+.avatar-actions { display:flex;flex-direction:column;gap:.5rem; }
+.btn-upload { padding:.5rem 1rem;border:1px solid var(--rule);background:transparent;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);transition:all .2s; }
+.btn-upload:hover{border-color:var(--ink);}
+.avatar-hint { font-size:.65rem;color:var(--ghost); }
+
+/* Fields */
+.field-wrap { margin-bottom:1rem; }
+.field-label { font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-bottom:.4rem;display:block; }
+.field-input { width:100%;padding:.625rem .875rem;background:transparent;border:1px solid var(--rule);outline:none;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--ink);transition:border-color .2s; }
+.field-input:focus{border-color:var(--ink);}
+.field-input::placeholder{color:var(--rule);}
+.field-textarea { width:100%;padding:.625rem .875rem;background:transparent;border:1px solid var(--rule);outline:none;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--ink);resize:vertical;min-height:90px;transition:border-color .2s; }
+.field-textarea:focus{border-color:var(--ink);}
+.field-textarea::placeholder{color:var(--rule);}
+.field-row2 { display:grid;grid-template-columns:1fr 1fr;gap:.75rem; }
+
+/* Tags especialidades */
+.tags-grid { display:flex;flex-wrap:wrap;gap:.4rem; }
+.spec-tag { font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .625rem;border:1px solid var(--rule);color:var(--ghost);transition:all .2s; }
+.spec-tag.selected{border-color:var(--ink);background:var(--ink);color:var(--paper);}
+.spec-tag:hover:not(.selected){border-color:var(--ghost);}
+
+/* Toggles */
+.toggle-row { display:flex;align-items:center;justify-content:space-between;padding:.875rem 0;border-bottom:1px solid var(--rule); }
+.toggle-row:last-child{border-bottom:none;}
+.toggle-info-label { font-size:.82rem;font-weight:500; }
+.toggle-info-sub { font-size:.68rem;color:var(--ghost);margin-top:.1rem; }
+.toggle-sw { width:36px;height:20px;background:var(--rule);border-radius:10px;position:relative;transition:background .2s;flex-shrink:0; }
+.toggle-sw.on{background:var(--ink);}
+.toggle-sw .knob { width:14px;height:14px;background:var(--paper);border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .2s; }
+.toggle-sw.on .knob{transform:translateX(16px);}
+
+/* Opiniones */
+.reviews-list { display:flex;flex-direction:column;gap:0; }
+.review-item { padding:1rem 0;border-bottom:1px solid var(--rule); }
+.review-item:last-child{border-bottom:none;}
+.review-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem; }
+.review-stars { display:flex;gap:2px; }
+.rstar { width:9px;height:9px;background:var(--accent);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); }
+.rstar.empty{background:var(--rule);}
+.review-date { font-size:.62rem;color:var(--ghost); }
+.review-text { font-size:.78rem;color:#555;line-height:1.6; }
+.review-anon { font-size:.62rem;color:var(--ghost);margin-top:.35rem; }
+
+/* Disponibilidad horario */
+.schedule-grid { display:grid;grid-template-columns:repeat(7,1fr);gap:.4rem; }
+.day-btn { padding:.5rem .25rem;border:1px solid var(--rule);font-size:.58rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-align:center;color:var(--ghost);transition:all .2s; }
+.day-btn.on{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.day-btn:hover:not(.on){border-color:var(--ghost);}
+
+@media(max-width:1100px){
+  body{grid-template-columns:220px 1fr;}
+  .quick-stats{grid-template-columns:1fr 1fr;}
+  .qstat:nth-child(2){border-right:none;}
+  .qstat:nth-child(3){border-top:1px solid var(--rule);}
+}
+@media(max-width:900px){
+  body{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .main{padding:1.5rem;}
+  .profile-grid{grid-template-columns:1fr;}
+  .quick-stats{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <a href="index.html" class="sidebar-logo">Agente LFT</a>
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">MR</div>
+    <div>
+      <div class="sidebar-name">Mario Reyes Ortiz</div>
+      <div class="sidebar-role">Abogado certificado</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Portal</div>
+    <a href="#" class="nav-item active"><span class="nav-icon">👤</span>Mi perfil</a>
+    <a href="#" class="nav-item"><span class="nav-icon">⭐</span>Calificaciones</a>
+    <a href="#" class="nav-icon nav-item"><span class="nav-icon">📋</span>Casos atendidos</a>
+    <a href="#" class="nav-item"><span class="nav-icon">💰</span>Comisiones</a>
+    <div class="nav-section">Cuenta</div>
+    <a href="#" class="nav-item"><span class="nav-icon">🔔</span>Notificaciones</a>
+    <a href="#" class="nav-item"><span class="nav-icon">🔒</span>Seguridad</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <a href="abogados.html"><span>👁</span> Ver mi perfil público</a>
+    <a href="login.html"><span>→</span> Cerrar sesión</a>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Mi perfil</div>
+      <div class="page-sub">Lo que ven los usuarios en el directorio público</div>
+    </div>
+    <button class="btn-save" id="btn-save" onclick="saveProfile()">Guardar cambios</button>
+  </div>
+
+  <!-- Stats rápidas -->
+  <div class="quick-stats">
+    <div class="qstat">
+      <div class="qstat-num">4.9</div>
+      <div class="qstat-label">Calificación</div>
+      <div class="qstat-delta">↑ 47 opiniones</div>
+    </div>
+    <div class="qstat">
+      <div class="qstat-num">38</div>
+      <div class="qstat-label">Casos este mes</div>
+      <div class="qstat-delta">↑ +12 vs anterior</div>
+    </div>
+    <div class="qstat">
+      <div class="qstat-num">$2,850</div>
+      <div class="qstat-label">Comisiones mes</div>
+      <div class="qstat-delta">MXN acumulado</div>
+    </div>
+    <div class="qstat">
+      <div class="qstat-num">#3</div>
+      <div class="qstat-label">Ranking CDMX</div>
+      <div class="qstat-delta">↑ subió 2 posiciones</div>
+    </div>
+  </div>
+
+  <!-- Perfil grid -->
+  <div class="profile-grid">
+
+    <!-- Foto y datos básicos -->
+    <div class="section-card">
+      <div class="section-card-title">Datos básicos</div>
+      <div class="avatar-section">
+        <div class="avatar-big">MR</div>
+        <div class="avatar-actions">
+          <button class="btn-upload">Cambiar foto</button>
+          <div class="avatar-hint">JPG o PNG · máx 2MB</div>
+        </div>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Nombre completo</label>
+        <input type="text" class="field-input" value="Mario Reyes Ortiz" />
+      </div>
+      <div class="field-row2">
+        <div class="field-wrap">
+          <label class="field-label">Ciudad</label>
+          <input type="text" class="field-input" value="Benito Juárez, CDMX" />
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Cédula profesional</label>
+          <input type="text" class="field-input" value="3847291" />
+        </div>
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">LinkedIn</label>
+        <input type="url" class="field-input" placeholder="https://linkedin.com/in/tu-perfil" />
+      </div>
+    </div>
+
+    <!-- Bio y disponibilidad -->
+    <div class="section-card">
+      <div class="section-card-title">Presentación</div>
+      <div class="field-wrap">
+        <label class="field-label">Bio profesional</label>
+        <textarea class="field-textarea">Especialista en conflictos laborales con más de 12 años de experiencia. Asesoría clara y sin rodeos para trabajadores y empresas.</textarea>
+      </div>
+      <div class="field-wrap" style="margin-top:1rem;">
+        <label class="field-label">Disponibilidad semanal</label>
+        <div class="schedule-grid" style="margin-top:.5rem;">
+          <div class="day-btn on" onclick="this.classList.toggle('on')">Lun</div>
+          <div class="day-btn on" onclick="this.classList.toggle('on')">Mar</div>
+          <div class="day-btn on" onclick="this.classList.toggle('on')">Mié</div>
+          <div class="day-btn on" onclick="this.classList.toggle('on')">Jue</div>
+          <div class="day-btn on" onclick="this.classList.toggle('on')">Vie</div>
+          <div class="day-btn" onclick="this.classList.toggle('on')">Sáb</div>
+          <div class="day-btn" onclick="this.classList.toggle('on')">Dom</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Especialidades -->
+    <div class="section-card">
+      <div class="section-card-title">Especialidades</div>
+      <div class="tags-grid">
+        <span class="spec-tag selected" onclick="toggleTag(this)">Liquidaciones</span>
+        <span class="spec-tag selected" onclick="toggleTag(this)">Finiquitos</span>
+        <span class="spec-tag selected" onclick="toggleTag(this)">IMSS</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Despidos</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Horas extra</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Prima vacacional</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Aguinaldo</span>
+        <span class="spec-tag" onclick="toggleTag(this)">INFONAVIT</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Contratos</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Acoso laboral</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Maternidad</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Trabajadores domésticos</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Empresas</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Relaciones colectivas</span>
+      </div>
+    </div>
+
+    <!-- Configuración -->
+    <div class="section-card">
+      <div class="section-card-title">Configuración</div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-info-label">Disponible para clientes</div>
+          <div class="toggle-info-sub">Apareces como disponible en el directorio</div>
+        </div>
+        <div class="toggle-sw on" onclick="this.classList.toggle('on')"><div class="knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-info-label">Programa pro bono</div>
+          <div class="toggle-info-sub">Visibilidad preferente a cambio de casos gratuitos</div>
+        </div>
+        <div class="toggle-sw on" onclick="this.classList.toggle('on')"><div class="knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-info-label">Notificaciones WhatsApp</div>
+          <div class="toggle-info-sub">Avisos de nuevos clientes en tiempo real</div>
+        </div>
+        <div class="toggle-sw on" onclick="this.classList.toggle('on')"><div class="knob"></div></div>
+      </div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-info-label">Perfil visible en catálogo</div>
+          <div class="toggle-info-sub">Desactiva para pausar temporalmente</div>
+        </div>
+        <div class="toggle-sw on" onclick="this.classList.toggle('on')"><div class="knob"></div></div>
+      </div>
+    </div>
+
+    <!-- Opiniones recientes -->
+    <div class="section-card profile-grid full">
+      <div class="section-card-title">Opiniones recientes</div>
+      <div class="reviews-list">
+        <div class="review-item">
+          <div class="review-header">
+            <div class="review-stars"><div class="rstar"></div><div class="rstar"></div><div class="rstar"></div><div class="rstar"></div><div class="rstar"></div></div>
+            <div class="review-date">Hace 2 días</div>
+          </div>
+          <div class="review-text">Excelente asesoría. Me explicó todo sobre mi liquidación de forma clara y rápida. El cálculo que me dio fue exacto.</div>
+          <div class="review-anon">Usuario verificado · Caso: Liquidación</div>
+        </div>
+        <div class="review-item">
+          <div class="review-header">
+            <div class="review-stars"><div class="rstar"></div><div class="rstar"></div><div class="rstar"></div><div class="rstar"></div><div class="rstar"></div></div>
+            <div class="review-date">Hace 5 días</div>
+          </div>
+          <div class="review-text">Muy profesional y directo. Resolvió mi duda sobre horas extra en menos de 10 minutos. Lo recomiendo ampliamente.</div>
+          <div class="review-anon">Usuario verificado · Caso: Horas extra</div>
+        </div>
+        <div class="review-item">
+          <div class="review-header">
+            <div class="review-stars"><div class="rstar"></div><div class="rstar"></div><div class="rstar"></div><div class="rstar"></div><div class="rstar empty"></div></div>
+            <div class="review-date">Hace 1 semana</div>
+          </div>
+          <div class="review-text">Buena atención, aunque tardó un poco en responder. La información fue útil y correcta.</div>
+          <div class="review-anon">Usuario verificado · Caso: IMSS</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animateRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animateRing);}
+animateRing();
+
+function toggleTag(el){el.classList.toggle('selected');}
+
+function saveProfile(){
+  const btn=document.getElementById('btn-save');
+  btn.textContent='Guardado ✓';
+  btn.classList.add('saved');
+  setTimeout(()=>{btn.textContent='Guardar cambios';btn.classList.remove('saved');},2000);
+  // En producción: POST a N8N webhook con los datos actualizados
+}
+</script>
+</body>
+</html>
