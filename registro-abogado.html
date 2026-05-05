@@ -1,248 +1,381 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro Partner Independiente — Agente LFT</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet" />
-  <style>
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-    :root{--ink:#0d0d0d;--paper:#f8f6f1;--warm:#f0ede6;--rule:#d8d4cc;--ghost:#b0aba0;--err:#c0392b;}
-    body{background:var(--paper);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;}
-    nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 5vw;border-bottom:1px solid var(--rule);}
-    .nav-logo{font-size:1rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--ink);}
-    .nav-back{font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ghost);text-decoration:none;transition:color .2s;}
-    .nav-back:hover{color:var(--ink);}
-    .hero{padding:4rem 5vw 2rem;border-bottom:1px solid var(--rule);}
-    .doc-label{font-size:.6rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ghost);margin-bottom:1rem;}
-    h1{font-size:clamp(2rem,5vw,4rem);font-weight:900;line-height:1;letter-spacing:-.02em;margin-bottom:1rem;}
-    .hero-sub{font-size:1rem;color:var(--ghost);line-height:1.7;max-width:560px;}
-    .form-wrap{max-width:720px;margin:0 auto;padding:3rem 5vw;}
-    .form-section{margin-bottom:3rem;}
-    .form-section-title{font-size:.65rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--rule);}
-    .field{margin-bottom:1.5rem;}
-    label{display:block;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);margin-bottom:.5rem;}
-    label span{color:var(--err);}
-    input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{width:100%;padding:.875rem 1rem;background:white;border:1px solid var(--rule);font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:300;color:var(--ink);outline:none;transition:border-color .2s;-webkit-appearance:none;}
-    input:focus,select:focus,textarea:focus{border-color:var(--ink);}
-    textarea{resize:vertical;min-height:100px;}
-    select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23b0aba0' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;}
-    .field-hint{font-size:.72rem;color:var(--ghost);margin-top:.4rem;line-height:1.5;}
-    .upload-area{border:1px dashed var(--rule);padding:2rem;text-align:center;background:white;transition:border-color .2s,background .2s;cursor:pointer;}
-    .upload-area:hover{border-color:var(--ink);background:var(--warm);}
-    .upload-area input[type=file]{display:none;}
-    .upload-icon{font-size:2rem;margin-bottom:.5rem;}
-    .upload-text{font-size:.85rem;color:var(--ghost);line-height:1.6;}
-    .upload-name{font-size:.8rem;font-weight:500;color:var(--ink);margin-top:.5rem;display:none;}
-    .checkbox-group{display:flex;flex-direction:column;gap:.75rem;}
-    .checkbox-item{display:flex;align-items:flex-start;gap:.75rem;cursor:pointer;}
-    .checkbox-item input[type=checkbox]{width:18px;height:18px;min-width:18px;border:1px solid var(--rule);background:white;appearance:none;cursor:pointer;margin-top:.1rem;}
-    .checkbox-item input[type=checkbox]:checked{background:var(--ink);border-color:var(--ink);}
-    .checkbox-item span{font-size:.85rem;line-height:1.6;color:#555;}
-    .form-notice{background:var(--warm);border-left:3px solid var(--ink);padding:1rem 1.5rem;font-size:.8rem;line-height:1.7;color:#555;margin-bottom:2rem;}
-    .form-notice strong{color:var(--ink);}
-    .btn-submit{display:block;width:100%;padding:1.1rem;background:var(--ink);color:var(--paper);font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s;}
-    .btn-submit:hover{background:#2a2a2a;}
-    .btn-submit:disabled{background:var(--ghost);cursor:not-allowed;}
-    .success-msg{display:none;text-align:center;padding:4rem 2rem;}
-    .success-msg h2{font-size:2rem;font-weight:900;margin-bottom:1rem;}
-    .success-msg p{font-size:1rem;color:var(--ghost);line-height:1.7;}
-    footer{padding:2rem 5vw;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
-    footer p{font-size:.7rem;color:var(--ghost);}
-    @media(max-width:600px){nav,.hero,footer{padding-left:1.5rem;padding-right:1.5rem;}.form-wrap{padding:2rem 1.5rem;}}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Registro Abogado — Agente LFT</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --ink: #0d0d0d; --paper: #f8f6f1; --warm: #f0ede6; --rule: #d8d4cc; --ghost: #b0aba0; --accent: #E8572A; }
+html { font-size: 16px; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; cursor: none; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+.cursor { width:8px;height:8px;background:var(--ink);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%); }
+.cursor-ring { width:32px;height:32px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.7; }
+a,button{cursor:none;}
+
+/* Panel izquierdo */
+.left-panel { background:var(--ink);color:var(--paper);padding:3rem;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;position:sticky;top:0;height:100vh; }
+.left-logo { font-size:1rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--paper); }
+.left-eyebrow { font-size:.6rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem; }
+.left-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
+.left-title { font-size:clamp(2rem,3.5vw,3.5rem);font-weight:900;line-height:.95;letter-spacing:-.03em;margin-bottom:2rem; }
+.left-title em{font-style:normal;font-weight:300;opacity:.5;}
+.left-benefits { display:flex;flex-direction:column;gap:.875rem;margin-top:1.5rem; }
+.left-benefit { display:flex;align-items:flex-start;gap:.75rem;font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.5; }
+.left-benefit-dot { width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:.35rem; }
+.left-benefit strong{color:rgba(255,255,255,.9);font-weight:500;}
+.left-bg { position:absolute;bottom:-4rem;right:-4rem;font-size:18rem;font-weight:900;color:rgba(255,255,255,.03);line-height:1;pointer-events:none;user-select:none; }
+.left-footer { font-size:.65rem;color:rgba(255,255,255,.2);letter-spacing:.1em; }
+
+/* Panel derecho */
+.right-panel { padding:4rem 5vw;overflow-y:auto; }
+.form-eyebrow { font-size:.6rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ghost);margin-bottom:2.5rem;display:flex;align-items:center;gap:.75rem; }
+.form-eyebrow::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);}
+
+/* Progress steps */
+.progress { display:flex;gap:0;margin-bottom:3rem;border:1px solid var(--rule); }
+.prog-step { flex:1;padding:.75rem 1rem;font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-align:center;color:var(--ghost);border-right:1px solid var(--rule);transition:all .3s; }
+.prog-step:last-child{border-right:none;}
+.prog-step.active{background:var(--ink);color:var(--paper);}
+.prog-step.done{color:var(--accent);border-bottom:2px solid var(--accent);}
+
+.form-step { display:none; }
+.form-step.active { display:block; }
+.step-title { font-size:1.5rem;font-weight:900;letter-spacing:-.02em;margin-bottom:.4rem; }
+.step-sub { font-size:.82rem;color:var(--ghost);margin-bottom:2rem;line-height:1.6; }
+
+/* Fields */
+.field-row { display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem; }
+.field-row.full{grid-template-columns:1fr;}
+.field-wrap { display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem; }
+.field-label { font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost); }
+.field-input { padding:.75rem 1rem;background:transparent;border:1px solid var(--rule);outline:none;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);transition:border-color .2s;width:100%; }
+.field-input:focus{border-color:var(--ink);}
+.field-input::placeholder{color:var(--rule);}
+.field-select { padding:.75rem 1rem;background:var(--paper);border:1px solid var(--rule);outline:none;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);width:100%;appearance:none;transition:border-color .2s; }
+.field-select:focus{border-color:var(--ink);}
+.field-textarea { padding:.75rem 1rem;background:transparent;border:1px solid var(--rule);outline:none;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);width:100%;resize:vertical;min-height:100px;transition:border-color .2s; }
+.field-textarea:focus{border-color:var(--ink);}
+.field-textarea::placeholder{color:var(--rule);}
+
+/* Tags de especialidades */
+.tags-grid { display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem; }
+.spec-tag { font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;border:1px solid var(--rule);color:var(--ghost);transition:all .2s; }
+.spec-tag.selected{border-color:var(--ink);background:var(--ink);color:var(--paper);}
+.spec-tag:hover:not(.selected){border-color:var(--ghost);}
+
+/* Upload */
+.upload-zone { border:1px dashed var(--rule);padding:2rem;text-align:center;margin-bottom:1rem;transition:border-color .2s; }
+.upload-zone:hover{border-color:var(--ink);}
+.upload-icon { font-size:1.5rem;margin-bottom:.5rem; }
+.upload-label { font-size:.75rem;color:var(--ghost);line-height:1.6; }
+.upload-label strong{color:var(--ink);}
+
+/* Toggle disponibilidad */
+.toggle-row { display:flex;align-items:center;justify-content:space-between;padding:1rem;border:1px solid var(--rule);margin-bottom:.5rem; }
+.toggle-info { font-size:.82rem; }
+.toggle-info small{font-size:.7rem;color:var(--ghost);display:block;margin-top:.15rem;}
+.toggle-switch { width:40px;height:22px;background:var(--rule);border-radius:11px;position:relative;transition:background .2s; }
+.toggle-switch.on{background:var(--ink);}
+.toggle-knob { width:16px;height:16px;background:var(--paper);border-radius:50%;position:absolute;top:3px;left:3px;transition:transform .2s; }
+.toggle-switch.on .toggle-knob{transform:translateX(18px);}
+
+/* Checkbox */
+.check-row { display:flex;align-items:flex-start;gap:.75rem;margin-bottom:1rem; }
+.check-box { width:16px;height:16px;border:1px solid var(--rule);flex-shrink:0;margin-top:.15rem;display:flex;align-items:center;justify-content:center;transition:all .2s; }
+.check-box.checked{background:var(--ink);border-color:var(--ink);}
+.check-box.checked::after{content:'✓';color:white;font-size:.65rem;}
+.check-label { font-size:.78rem;color:var(--ghost);line-height:1.5; }
+.check-label a{color:var(--ink);}
+
+/* Botones */
+.btn-row { display:flex;gap:1rem;margin-top:2rem; }
+.btn-primary { flex:1;padding:1rem;background:var(--ink);color:var(--paper);font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;border:none;text-align:center;transition:background .2s; }
+.btn-primary:hover{background:#2a2a2a;}
+.btn-back { padding:1rem 1.5rem;background:transparent;color:var(--ghost);font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--rule);transition:all .2s; }
+.btn-back:hover{border-color:var(--ink);color:var(--ink);}
+
+/* Success */
+.success-screen { display:none;text-align:center;padding:4rem 0; }
+.success-icon { width:64px;height:64px;border-radius:50%;background:var(--warm);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 2rem; }
+.success-title { font-size:2rem;font-weight:900;letter-spacing:-.02em;margin-bottom:.75rem; }
+.success-sub { font-size:.9rem;color:var(--ghost);line-height:1.7;max-width:400px;margin:0 auto 2rem; }
+.success-steps { text-align:left;border:1px solid var(--rule);padding:1.5rem;margin-bottom:2rem; }
+.success-step { font-size:.78rem;color:#555;padding:.5rem 0;border-bottom:1px solid var(--rule);display:flex;gap:.75rem;align-items:flex-start; }
+.success-step:last-child{border-bottom:none;}
+.success-step-num { font-size:.6rem;font-weight:700;width:20px;height:20px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.btn-home { display:inline-block;padding:.875rem 2rem;background:var(--ink);color:var(--paper);font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;transition:background .2s; }
+.btn-home:hover{background:#2a2a2a;}
+
+@media(max-width:900px){
+  body{grid-template-columns:1fr;}
+  .left-panel{display:none;}
+  .right-panel{padding:4rem 1.5rem 3rem;}
+  .field-row{grid-template-columns:1fr;}
+}
+</style>
 </head>
 <body>
-  <nav>
-    <a href="index.html" class="nav-logo">Agente LFT</a>
-    <a href="index.html" class="nav-back">← Volver</a>
-  </nav>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-  <div class="hero">
-    <div class="doc-label">Partner Independiente · Registro</div>
-    <h1>Solicitud de alta<br />como abogado.</h1>
-    <p class="hero-sub">Completa el formulario para iniciar tu proceso de verificación. Una vez aprobado, aparecerás en el catálogo de Agente LFT y empezarás a recibir llamadas.</p>
+<!-- Panel izquierdo -->
+<div class="left-panel">
+  <a href="index.html" class="left-logo">Agente LFT</a>
+  <div>
+    <div class="left-eyebrow">Alta de abogado</div>
+    <h1 class="left-title">Tu práctica.<br /><em>Más</em><br />clientes.</h1>
+    <div class="left-benefits">
+      <div class="left-benefit"><div class="left-benefit-dot"></div><strong>Alta gratuita</strong> — sin costo de entrada</div>
+      <div class="left-benefit"><div class="left-benefit-dot"></div><strong>15% por atención</strong> — pagas solo cuando atiendes</div>
+      <div class="left-benefit"><div class="left-benefit-dot"></div><strong>Número protegido</strong> — nunca lo compartimos</div>
+      <div class="left-benefit"><div class="left-benefit-dot"></div><strong>Clientes calificados</strong> — ya saben qué necesitan</div>
+      <div class="left-benefit"><div class="left-benefit-dot"></div><strong>Pro bono</strong> — visibilidad preferente en el catálogo</div>
+    </div>
+  </div>
+  <div class="left-bg">⚖</div>
+  <div class="left-footer">© 2026 Disrupting MEX · Ciudad de México</div>
+</div>
+
+<!-- Panel derecho -->
+<div class="right-panel">
+  <div class="form-eyebrow">Registro de abogado</div>
+
+  <div class="progress">
+    <div class="prog-step active" id="prog1">01 Datos</div>
+    <div class="prog-step" id="prog2">02 Perfil</div>
+    <div class="prog-step" id="prog3">03 Verificación</div>
   </div>
 
-  <div class="form-wrap" id="form-container">
+  <!-- Step 1: Datos personales -->
+  <div class="form-step active" id="fs1">
+    <div class="step-title">Datos personales</div>
+    <p class="step-sub">Información básica para crear tu perfil en el directorio.</p>
 
-    <div class="form-notice">
-      <strong>¿Cómo funciona?</strong> Alta 100% gratuita. Pagas solo el 15% del costo de la llamada ($150 MXN) cuando contestas — aproximadamente $22.50 MXN por llamada atendida. Los clientes que generes fuera de la plataforma son completamente tuyos.
+    <div class="field-row">
+      <div class="field-wrap">
+        <label class="field-label">Nombre(s)</label>
+        <input type="text" class="field-input" placeholder="Mario" />
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Apellidos</label>
+        <input type="text" class="field-input" placeholder="Reyes Ortiz" />
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-wrap">
+        <label class="field-label">Número de WhatsApp</label>
+        <input type="tel" class="field-input" placeholder="+52 55 1234 5678" />
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Correo electrónico</label>
+        <input type="email" class="field-input" placeholder="mario@despacho.com" />
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-wrap">
+        <label class="field-label">Ciudad</label>
+        <input type="text" class="field-input" placeholder="Ciudad de México" />
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Estado</label>
+        <select class="field-select">
+          <option value="">Selecciona...</option>
+          <option>Ciudad de México</option>
+          <option>Jalisco</option>
+          <option>Nuevo León</option>
+          <option>Puebla</option>
+          <option>Veracruz</option>
+          <option>Guanajuato</option>
+          <option>Otro</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row full">
+      <div class="field-wrap">
+        <label class="field-label">LinkedIn (opcional)</label>
+        <input type="url" class="field-input" placeholder="https://linkedin.com/in/tu-perfil" />
+      </div>
     </div>
 
-    <form id="registro-form" enctype="multipart/form-data">
-
-      <div class="form-section">
-        <div class="form-section-title">Datos personales</div>
-        <div class="field">
-          <label>Nombre completo <span>*</span></label>
-          <input type="text" name="nombre" required placeholder="Lic. Juan García Martínez" />
-        </div>
-        <div class="field">
-          <label>Correo electrónico <span>*</span></label>
-          <input type="email" name="email" required placeholder="juan@despacho.com" />
-        </div>
-        <div class="field">
-          <label>Teléfono celular <span>*</span></label>
-          <input type="tel" name="telefono" required placeholder="+52 55 1234 5678" />
-          <p class="field-hint">Este número nunca será compartido con los usuarios. Toda comunicación pasa por la plataforma.</p>
-        </div>
-        <div class="field">
-          <label>Ciudad y estado <span>*</span></label>
-          <input type="text" name="ciudad" required placeholder="Ciudad de México, CDMX" />
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-title">Credenciales profesionales</div>
-        <div class="field">
-          <label>Número de cédula profesional <span>*</span></label>
-          <input type="text" name="cedula" required placeholder="12345678" />
-        </div>
-        <div class="field">
-          <label>Universidad de egreso <span>*</span></label>
-          <input type="text" name="universidad" required placeholder="UNAM, UAM, IPN..." />
-        </div>
-        <div class="field">
-          <label>Años de experiencia en derecho laboral <span>*</span></label>
-          <select name="experiencia" required>
-            <option value="">Seleccionar...</option>
-            <option value="1-3">1 a 3 años</option>
-            <option value="4-7">4 a 7 años</option>
-            <option value="8-15">8 a 15 años</option>
-            <option value="15+">Más de 15 años</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Especialidades adicionales</label>
-          <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" name="especialidad[]" value="despidos" /><span>Despidos y liquidaciones</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="especialidad[]" value="imss" /><span>IMSS y seguridad social</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="especialidad[]" value="colectivo" /><span>Derecho colectivo y sindicatos</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="especialidad[]" value="acoso" /><span>Acoso y hostigamiento laboral</span></label>
-            <label class="checkbox-item"><input type="checkbox" name="especialidad[]" value="empresarial" /><span>Asesoría a empresas</span></label>
-          </div>
-        </div>
-        <div class="field">
-          <label>Breve descripción de tu práctica</label>
-          <textarea name="descripcion" placeholder="Cuéntanos brevemente tu enfoque, tipos de casos que manejas y lo que te diferencia..."></textarea>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-title">Documentos de verificación</div>
-        <div class="field">
-          <label>Cédula profesional (imagen o PDF) <span>*</span></label>
-          <div class="upload-area" onclick="document.getElementById('file-cedula').click()">
-            <input type="file" id="file-cedula" name="doc_cedula" accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this,'name-cedula')" />
-            <div class="upload-icon">📄</div>
-            <div class="upload-text">Haz clic para subir tu cédula profesional<br /><small>PDF, JPG o PNG · Máx. 5MB</small></div>
-            <div class="upload-name" id="name-cedula"></div>
-          </div>
-        </div>
-        <div class="field">
-          <label>INE o Pasaporte vigente <span>*</span></label>
-          <div class="upload-area" onclick="document.getElementById('file-ine').click()">
-            <input type="file" id="file-ine" name="doc_ine" accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this,'name-ine')" />
-            <div class="upload-icon">🪪</div>
-            <div class="upload-text">Haz clic para subir tu INE o pasaporte<br /><small>PDF, JPG o PNG · Máx. 5MB</small></div>
-            <div class="upload-name" id="name-ine"></div>
-          </div>
-        </div>
-        <div class="field">
-          <label>Constancia de situación fiscal (RFC) — opcional</label>
-          <div class="upload-area" onclick="document.getElementById('file-rfc').click()">
-            <input type="file" id="file-rfc" name="doc_rfc" accept=".pdf,.jpg,.jpeg,.png" onchange="showFileName(this,'name-rfc')" />
-            <div class="upload-icon">📋</div>
-            <div class="upload-text">Haz clic para subir tu constancia fiscal<br /><small>PDF, JPG o PNG · Máx. 5MB</small></div>
-            <div class="upload-name" id="name-rfc"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="form-section-title">Compromiso y términos</div>
-        <div class="field">
-          <div class="checkbox-group">
-            <label class="checkbox-item">
-              <input type="checkbox" name="acepta_terminos" required />
-              <span>He leído y acepto los <a href="terminos.html" target="_blank">Términos y Condiciones</a> y el <a href="privacidad.html" target="_blank">Aviso de Privacidad</a> de Agente LFT.</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="checkbox" name="acepta_privacidad" required />
-              <span>Entiendo que mi número telefónico nunca será compartido con los usuarios y que toda comunicación ocurrirá a través de la plataforma de Agente LFT.</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="checkbox" name="acepta_comision" required />
-              <span>Acepto la comisión del 15% sobre el costo de cada llamada atendida ($150 MXN). Entiendo que solo se cobra cuando contesto una llamada.</span>
-            </label>
-            <label class="checkbox-item">
-              <input type="checkbox" name="acepta_conducta" required />
-              <span>Me comprometo a mantener estándares profesionales de servicio. Entiendo que quejas fundadas pueden resultar en la baja del catálogo.</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <button type="submit" class="btn-submit" id="btn-submit">Enviar solicitud de alta →</button>
-    </form>
-
-    <div class="success-msg" id="success-msg">
-      <div style="font-size:3rem;margin-bottom:1rem;">✅</div>
-      <h2>Solicitud recibida.</h2>
-      <p>Revisaremos tu información y documentos en un plazo de 2-3 días hábiles. Te contactaremos al correo que proporcionaste para confirmar tu alta en el catálogo.<br /><br />
-      <a href="index.html" style="color:var(--ink);font-weight:700;">← Volver al inicio</a></p>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goStep(2)">Continuar →</button>
     </div>
   </div>
 
-  <footer>
-    <p>© 2026 Disrupting MEX · Agente LFT</p>
-    <p><a href="terminos.html" style="color:var(--ghost);">Términos</a> · <a href="privacidad.html" style="color:var(--ghost);">Privacidad</a></p>
-  </footer>
+  <!-- Step 2: Perfil público -->
+  <div class="form-step" id="fs2">
+    <div class="step-title">Tu perfil público</div>
+    <p class="step-sub">Esto es lo que verán los usuarios en el directorio. Cuéntales quién eres.</p>
 
-  <script>
-    function showFileName(input, nameId) {
-      const nameEl = document.getElementById(nameId);
-      if (input.files && input.files[0]) {
-        nameEl.textContent = '✓ ' + input.files[0].name;
-        nameEl.style.display = 'block';
-      }
-    }
+    <div class="field-wrap">
+      <label class="field-label">Foto de perfil</label>
+      <div class="upload-zone">
+        <div class="upload-icon">📷</div>
+        <div class="upload-label"><strong>Arrastra una foto</strong> o haz clic para subir<br />JPG o PNG · máx 2MB · fondo neutro recomendado</div>
+      </div>
+    </div>
 
-    document.getElementById('registro-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('btn-submit');
-      btn.disabled = true;
-      btn.textContent = 'Enviando...';
+    <div class="field-wrap">
+      <label class="field-label">Bio profesional</label>
+      <textarea class="field-textarea" placeholder="Describe tu experiencia, enfoque y los tipos de casos que atiendes. Máx 280 caracteres."></textarea>
+    </div>
 
-      const formData = new FormData(this);
-      const data = {};
-      for (let [key, value] of formData.entries()) {
-        if (key !== 'doc_cedula' && key !== 'doc_ine' && key !== 'doc_rfc') {
-          if (data[key]) {
-            if (!Array.isArray(data[key])) data[key] = [data[key]];
-            data[key].push(value);
-          } else {
-            data[key] = value;
-          }
-        }
-      }
-      data.tipo = 'abogado_independiente';
-      data.fecha = new Date().toISOString();
+    <div class="field-wrap">
+      <label class="field-label">Especialidades (selecciona todas las que apliquen)</label>
+      <div class="tags-grid">
+        <span class="spec-tag" onclick="toggleTag(this)">Liquidaciones</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Finiquitos</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Despidos</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Horas extra</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Prima vacacional</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Aguinaldo</span>
+        <span class="spec-tag" onclick="toggleTag(this)">IMSS</span>
+        <span class="spec-tag" onclick="toggleTag(this)">INFONAVIT</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Contratos</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Acoso laboral</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Maternidad</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Trabajadores domésticos</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Empresas</span>
+        <span class="spec-tag" onclick="toggleTag(this)">Relaciones colectivas</span>
+      </div>
+    </div>
 
-      try {
-        await fetch('https://workflow.grupoalefsi.com/webhook/registro-partner', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-      } catch(err) {
-        console.log('Webhook error:', err);
-      }
+    <div class="field-wrap">
+      <label class="field-label">Disponibilidad</label>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          Disponible para recibir clientes
+          <small>Puedes cambiar esto en cualquier momento desde tu portal</small>
+        </div>
+        <div class="toggle-switch on" id="disp-toggle" onclick="toggleDisp()">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-info">
+          Participar en programa pro bono
+          <small>Visibilidad preferente en el catálogo a cambio de casos gratuitos</small>
+        </div>
+        <div class="toggle-switch" id="probono-toggle" onclick="toggleProbono()">
+          <div class="toggle-knob"></div>
+        </div>
+      </div>
+    </div>
 
-      document.getElementById('registro-form').style.display = 'none';
-      document.getElementById('success-msg').style.display = 'block';
-    });
-  </script>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(1)">← Volver</button>
+      <button class="btn-primary" onclick="goStep(3)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Verificación -->
+  <div class="form-step" id="fs3">
+    <div class="step-title">Verificación</div>
+    <p class="step-sub">Necesitamos verificar tu identidad y cédula profesional. Solo lo hacemos una vez.</p>
+
+    <div class="field-row">
+      <div class="field-wrap">
+        <label class="field-label">Número de cédula profesional</label>
+        <input type="text" class="field-input" placeholder="12345678" />
+      </div>
+      <div class="field-wrap">
+        <label class="field-label">Año de titulación</label>
+        <input type="number" class="field-input" placeholder="2015" min="1980" max="2025" />
+      </div>
+    </div>
+
+    <div class="field-wrap">
+      <label class="field-label">INE — Frente</label>
+      <div class="upload-zone">
+        <div class="upload-icon">🪪</div>
+        <div class="upload-label"><strong>Frente de tu INE</strong><br />JPG o PNG · máx 5MB · foto clara y legible</div>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label class="field-label">INE — Reverso</label>
+      <div class="upload-zone">
+        <div class="upload-icon">🪪</div>
+        <div class="upload-label"><strong>Reverso de tu INE</strong><br />JPG o PNG · máx 5MB</div>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label class="field-label">Cédula profesional (documento)</label>
+      <div class="upload-zone">
+        <div class="upload-icon">📄</div>
+        <div class="upload-label"><strong>Foto o PDF de tu cédula</strong><br />JPG, PNG o PDF · máx 5MB</div>
+      </div>
+    </div>
+
+    <div class="check-row" onclick="toggleCheck('chk1')">
+      <div class="check-box" id="chk1"></div>
+      <div class="check-label">Acepto los <a href="terminos.html">Términos y Condiciones</a> y el <a href="privacidad.html">Aviso de Privacidad</a> de Agente LFT.</div>
+    </div>
+    <div class="check-row" onclick="toggleCheck('chk2')">
+      <div class="check-box" id="chk2"></div>
+      <div class="check-label">Entiendo que mi número de teléfono nunca será compartido directamente con usuarios sin mi consentimiento.</div>
+    </div>
+    <div class="check-row" onclick="toggleCheck('chk3')">
+      <div class="check-box" id="chk3"></div>
+      <div class="check-label">La información que proporcioné es verídica. Entiendo que una verificación falsa resulta en baja inmediata.</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(2)">← Volver</button>
+      <button class="btn-primary" onclick="submitForm()">Enviar solicitud →</button>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Solicitud enviada</div>
+    <p class="success-sub">Recibimos tu registro. El equipo de Agente LFT revisará tu información y te contactará por WhatsApp en menos de 48 horas.</p>
+    <div class="success-steps">
+      <div class="success-step"><div class="success-step-num">1</div>Revisamos tu cédula e INE con el sistema de la SEP</div>
+      <div class="success-step"><div class="success-step-num">2</div>Te enviamos confirmación por WhatsApp</div>
+      <div class="success-step"><div class="success-step-num">3</div>Tu perfil aparece en el directorio certificado</div>
+      <div class="success-step"><div class="success-step-num">4</div>Empiezas a recibir clientes calificados</div>
+    </div>
+    <a href="abogados.html" class="btn-home">Ver directorio →</a>
+  </div>
+
+</div>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animateRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animateRing);}
+animateRing();
+
+function goStep(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById('fs'+i).classList.remove('active');
+    const p=document.getElementById('prog'+i);
+    if(i<n){p.className='prog-step done';}
+    else if(i===n){p.className='prog-step active';}
+    else{p.className='prog-step';}
+  });
+  document.getElementById('fs'+n).classList.add('active');
+  document.querySelector('.right-panel').scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleTag(el){el.classList.toggle('selected');}
+
+function toggleDisp(){document.getElementById('disp-toggle').classList.toggle('on');}
+function toggleProbono(){document.getElementById('probono-toggle').classList.toggle('on');}
+function toggleCheck(id){document.getElementById(id).classList.toggle('checked');}
+
+function submitForm(){
+  // En producción: POST a N8N webhook con todos los datos
+  [1,2,3].forEach(i=>document.getElementById('fs'+i).classList.remove('active'));
+  document.querySelector('.progress').style.display='none';
+  document.querySelector('.form-eyebrow').style.display='none';
+  document.getElementById('success-screen').style.display='block';
+  document.querySelector('.right-panel').scrollTo({top:0,behavior:'smooth'});
+}
+</script>
 </body>
 </html>
