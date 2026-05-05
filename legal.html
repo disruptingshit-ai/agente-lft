@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Legal — Agente LFT</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --ink: #0d0d0d; --paper: #f8f6f1; --warm: #f0ede6; --rule: #d8d4cc; --ghost: #b0aba0; --accent: #E8572A; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; cursor: none; }
+.cursor { width:8px;height:8px;background:var(--ink);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%); }
+.cursor-ring { width:32px;height:32px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.7; }
+a,button{cursor:none;}
+
+nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 5vw;background:rgba(248,246,241,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule); }
+.nav-logo { font-size:1rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--ink); }
+.nav-links { display:flex;gap:2.5rem;list-style:none; }
+.nav-links a { font-size:.7rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;color:var(--ink);opacity:.5;transition:opacity .2s; }
+.nav-links a:hover{opacity:1;}
+
+/* Layout principal */
+.layout { display:grid;grid-template-columns:240px 1fr;min-height:100vh;padding-top:5rem; }
+
+/* Sidebar índice */
+.toc { padding:3rem 2rem;position:sticky;top:5rem;height:calc(100vh - 5rem);overflow-y:auto;border-right:1px solid var(--rule); }
+.toc-title { font-size:.58rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem; }
+.toc-title::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);}
+.toc-section { margin-bottom:1.5rem; }
+.toc-section-title { font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ink);margin-bottom:.5rem; }
+.toc-link { display:block;font-size:.72rem;color:var(--ghost);text-decoration:none;padding:.25rem 0;transition:color .2s;line-height:1.5; }
+.toc-link:hover{color:var(--ink);}
+.toc-link.active{color:var(--accent);}
+.toc-divider { border:none;border-top:1px solid var(--rule);margin:1rem 0; }
+
+/* Contenido */
+.content { padding:3rem 5vw 7rem;max-width:760px; }
+
+/* Tabs Términos / Privacidad */
+.doc-tabs { display:flex;border-bottom:1px solid var(--rule);margin-bottom:3rem; }
+.doc-tab { padding:.875rem 2rem;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--ghost);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none; }
+.doc-tab.active{color:var(--ink);border-bottom-color:var(--ink);}
+.doc-tab:hover:not(.active){color:var(--ink);}
+.doc-content{display:none;}
+.doc-content.active{display:block;}
+
+/* Tipografía legal */
+.doc-header { margin-bottom:2.5rem; }
+.doc-eyebrow { font-size:.6rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ghost);margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem; }
+.doc-eyebrow::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);}
+.doc-title { font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1;letter-spacing:-.03em;margin-bottom:.75rem; }
+.doc-meta { font-size:.72rem;color:var(--ghost);line-height:1.6; }
+.doc-meta strong{color:var(--ink);}
+
+.legal-section { margin-bottom:3rem;padding-bottom:3rem;border-bottom:1px solid var(--rule); }
+.legal-section:last-child{border-bottom:none;}
+.legal-section-num { font-size:.58rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem; }
+.legal-section-title { font-size:1.1rem;font-weight:700;margin-bottom:1rem;letter-spacing:-.01em; }
+.legal-p { font-size:.88rem;line-height:1.85;color:#444;margin-bottom:1rem; }
+.legal-p:last-child{margin-bottom:0;}
+.legal-p strong{color:var(--ink);font-weight:600;}
+.legal-list { list-style:none;margin:.75rem 0 1rem;display:flex;flex-direction:column;gap:.5rem; }
+.legal-list li { font-size:.85rem;line-height:1.7;color:#444;padding-left:1.25rem;position:relative; }
+.legal-list li::before{content:'—';position:absolute;left:0;color:var(--ghost);font-size:.75rem;}
+.legal-highlight { border-left:2px solid var(--accent);padding:.75rem 1.25rem;margin:1.25rem 0;font-size:.85rem;line-height:1.7;color:#555;background:var(--warm); }
+
+footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem; }
+.footer-brand{font-size:1.2rem;font-weight:700;letter-spacing:.1em;}
+.footer-center{text-align:center;font-size:.65rem;color:var(--ghost);letter-spacing:.1em;line-height:1.8;}
+.footer-links{display:flex;justify-content:flex-end;gap:2rem;}
+.footer-links a{font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ghost);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--ink);}
+
+@media(max-width:900px){
+  nav{padding:1.25rem 1.5rem;}.nav-links{display:none;}
+  .layout{grid-template-columns:1fr;}
+  .toc{display:none;}
+  .content{padding:2rem 1.5rem 4rem;}
+  footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-content:center;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Agente LFT</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Inicio</a></li>
+    <li><a href="pricing.html">Planes</a></li>
+    <li><a href="abogados.html">Abogados</a></li>
+  </ul>
+</nav>
+
+<div class="layout">
+  <!-- Índice lateral -->
+  <aside class="toc">
+    <div class="toc-title">Contenido</div>
+    <div class="toc-section">
+      <div class="toc-section-title">Términos</div>
+      <a href="#t1" class="toc-link">1. Descripción del servicio</a>
+      <a href="#t2" class="toc-link">2. Registro y cuenta</a>
+      <a href="#t3" class="toc-link">3. Uso aceptable</a>
+      <a href="#t4" class="toc-link">4. Pagos y suscripciones</a>
+      <a href="#t5" class="toc-link">5. Limitación de responsabilidad</a>
+      <a href="#t6" class="toc-link">6. Abogados y despachos</a>
+      <a href="#t7" class="toc-link">7. Modificaciones</a>
+      <a href="#t8" class="toc-link">8. Ley aplicable</a>
+    </div>
+    <hr class="toc-divider" />
+    <div class="toc-section">
+      <div class="toc-section-title">Privacidad</div>
+      <a href="#p1" class="toc-link">1. Responsable del tratamiento</a>
+      <a href="#p2" class="toc-link">2. Datos que recopilamos</a>
+      <a href="#p3" class="toc-link">3. Finalidades</a>
+      <a href="#p4" class="toc-link">4. Transferencia de datos</a>
+      <a href="#p5" class="toc-link">5. Derechos ARCO</a>
+      <a href="#p6" class="toc-link">6. Cookies</a>
+      <a href="#p7" class="toc-link">7. Cambios al aviso</a>
+    </div>
+  </aside>
+
+  <!-- Contenido -->
+  <div class="content">
+    <div class="doc-tabs">
+      <button class="doc-tab active" onclick="showDoc('terminos',this)">Términos y Condiciones</button>
+      <button class="doc-tab" onclick="showDoc('privacidad',this)">Aviso de Privacidad</button>
+    </div>
+
+    <!-- TÉRMINOS -->
+    <div class="doc-content active" id="doc-terminos">
+      <div class="doc-header">
+        <div class="doc-eyebrow">Documento legal</div>
+        <h1 class="doc-title">Términos y<br />Condiciones</h1>
+        <div class="doc-meta"><strong>Última actualización:</strong> 1 de mayo de 2026 · <strong>Versión:</strong> 1.0<br />Disrupting MEX S.A.S. de C.V. · Ciudad de México, México</div>
+      </div>
+
+      <div class="legal-highlight">Al usar Agente LFT aceptas estos términos en su totalidad. Si no estás de acuerdo, no uses el servicio.</div>
+
+      <div class="legal-section" id="t1">
+        <div class="legal-section-num">01</div>
+        <div class="legal-section-title">Descripción del servicio</div>
+        <p class="legal-p">Agente LFT es un asistente de orientación legal laboral disponible a través de WhatsApp. Proporciona información basada en la Ley Federal del Trabajo (LFT) vigente en México, cálculos de conceptos laborales y conexión con abogados certificados.</p>
+        <p class="legal-p"><strong>Agente LFT no es un despacho jurídico ni provee asesoría legal formal.</strong> La información proporcionada tiene carácter orientativo. Para situaciones que requieran representación legal, el usuario deberá contratar un abogado independiente.</p>
+      </div>
+
+      <div class="legal-section" id="t2">
+        <div class="legal-section-num">02</div>
+        <div class="legal-section-title">Registro y cuenta</div>
+        <p class="legal-p">El acceso al servicio se realiza mediante número de teléfono celular con WhatsApp activo. Al enviar tu primer mensaje aceptas estos términos y se crea automáticamente un perfil asociado a tu número.</p>
+        <ul class="legal-list">
+          <li>Eres responsable de mantener la confidencialidad de tu número y acceso</li>
+          <li>No puedes transferir tu cuenta a otra persona</li>
+          <li>Debes tener al menos 18 años para usar el servicio</li>
+          <li>Un número de teléfono corresponde a una sola cuenta</li>
+        </ul>
+      </div>
+
+      <div class="legal-section" id="t3">
+        <div class="legal-section-num">03</div>
+        <div class="legal-section-title">Uso aceptable</div>
+        <p class="legal-p">Está prohibido usar Agente LFT para:</p>
+        <ul class="legal-list">
+          <li>Enviar mensajes automatizados, spam o consultas masivas</li>
+          <li>Intentar acceder a datos de otros usuarios</li>
+          <li>Usar el servicio con fines distintos a la orientación laboral personal</li>
+          <li>Reproducir o distribuir el contenido del servicio sin autorización</li>
+          <li>Cualquier actividad que viole la legislación mexicana vigente</li>
+        </ul>
+        <p class="legal-p">Disrupting MEX se reserva el derecho de suspender cuentas que violen estas condiciones sin previo aviso y sin reembolso.</p>
+      </div>
+
+      <div class="legal-section" id="t4">
+        <div class="legal-section-num">04</div>
+        <div class="legal-section-title">Pagos y suscripciones</div>
+        <p class="legal-p">Los pagos se procesan a través de Stripe. Al suscribirte al plan Plus autorizas el cobro recurrente según la periodicidad seleccionada (mensual, 6 meses o 12 meses).</p>
+        <ul class="legal-list">
+          <li><strong>Plan mensual:</strong> se cobra el mismo día de cada mes. Cancela en cualquier momento antes de la renovación</li>
+          <li><strong>Planes prepago:</strong> el cobro es único al inicio del período. No son reembolsables una vez procesados</li>
+          <li><strong>Precio de lealtad:</strong> aplica para suscripciones mensuales activas consecutivas sin cancelación</li>
+          <li>Los precios incluyen IVA cuando aplique conforme a la legislación fiscal mexicana</li>
+        </ul>
+        <div class="legal-highlight">No se realizan reembolsos por períodos prepagados. Las suscripciones mensuales pueden cancelarse antes del siguiente ciclo de facturación.</div>
+      </div>
+
+      <div class="legal-section" id="t5">
+        <div class="legal-section-num">05</div>
+        <div class="legal-section-title">Limitación de responsabilidad</div>
+        <p class="legal-p">Disrupting MEX no se hace responsable por decisiones tomadas con base en la información proporcionada por Agente LFT. El servicio se ofrece "tal como está" y no garantiza resultados específicos en procesos laborales.</p>
+        <p class="legal-p">La responsabilidad máxima de Disrupting MEX ante cualquier reclamación no excederá el monto pagado por el usuario en los últimos 3 meses de servicio.</p>
+      </div>
+
+      <div class="legal-section" id="t6">
+        <div class="legal-section-num">06</div>
+        <div class="legal-section-title">Abogados y despachos</div>
+        <p class="legal-p">Los abogados y despachos que forman parte del directorio son profesionales independientes. Agente LFT verifica su cédula profesional e identidad, pero no es responsable de la calidad o resultado de los servicios que presten de manera independiente.</p>
+        <ul class="legal-list">
+          <li>La plataforma protege la privacidad de números de ambas partes</li>
+          <li>El contacto directo fuera de la plataforma queda bajo responsabilidad de las partes</li>
+          <li>Las comisiones son del 15% sobre el costo de cada atención</li>
+          <li>Los abogados pueden darse de baja en cualquier momento</li>
+        </ul>
+      </div>
+
+      <div class="legal-section" id="t7">
+        <div class="legal-section-num">07</div>
+        <div class="legal-section-title">Modificaciones al servicio</div>
+        <p class="legal-p">Disrupting MEX puede modificar estos términos, las funciones del servicio o los precios con <strong>30 días de anticipación</strong> mediante notificación por WhatsApp. El uso continuo del servicio después de ese período implica la aceptación de los cambios.</p>
+      </div>
+
+      <div class="legal-section" id="t8">
+        <div class="legal-section-num">08</div>
+        <div class="legal-section-title">Ley aplicable y jurisdicción</div>
+        <p class="legal-p">Estos términos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier controversia se someterá a los tribunales competentes de la Ciudad de México, renunciando las partes a cualquier otro fuero que pudiera corresponderles.</p>
+        <p class="legal-p">Para dudas o reclamaciones: <strong>legal@agentlft.mx</strong></p>
+      </div>
+    </div>
+
+    <!-- PRIVACIDAD -->
+    <div class="doc-content" id="doc-privacidad">
+      <div class="doc-header">
+        <div class="doc-eyebrow">Documento legal</div>
+        <h1 class="doc-title">Aviso de<br />Privacidad</h1>
+        <div class="doc-meta"><strong>Última actualización:</strong> 1 de mayo de 2026 · <strong>Versión:</strong> 1.0<br />Disrupting MEX S.A.S. de C.V. · Ciudad de México, México<br />De conformidad con la <strong>Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)</strong></div>
+      </div>
+
+      <div class="legal-highlight">Tus datos son tuyos. Solo los usamos para darte el servicio y nunca los vendemos a terceros.</div>
+
+      <div class="legal-section" id="p1">
+        <div class="legal-section-num">01</div>
+        <div class="legal-section-title">Responsable del tratamiento</div>
+        <p class="legal-p"><strong>Disrupting MEX S.A.S. de C.V.</strong>, con domicilio en Ciudad de México, México, es el responsable del tratamiento de tus datos personales en términos de la LFPDPPP.</p>
+        <p class="legal-p">Contacto de privacidad: <strong>privacidad@agentlft.mx</strong></p>
+      </div>
+
+      <div class="legal-section" id="p2">
+        <div class="legal-section-num">02</div>
+        <div class="legal-section-title">Datos personales que recopilamos</div>
+        <p class="legal-p"><strong>Datos que nos proporcionas directamente:</strong></p>
+        <ul class="legal-list">
+          <li>Número de teléfono celular (identificador principal)</li>
+          <li>Nombre (cuando lo proporcionas voluntariamente)</li>
+          <li>Contenido de tus consultas y conversaciones con el Agente</li>
+          <li>Para abogados: cédula profesional, INE, fotografía, especialidades y datos de contacto profesional</li>
+          <li>Para despachos: RFC, razón social, documentos fiscales y datos del representante legal</li>
+        </ul>
+        <p class="legal-p"><strong>Datos que recopilamos automáticamente:</strong></p>
+        <ul class="legal-list">
+          <li>Fecha y hora de las consultas</li>
+          <li>Número de consultas realizadas</li>
+          <li>Plan activo y historial de pagos</li>
+        </ul>
+        <p class="legal-p">No recopilamos datos sensibles en términos de la LFPDPPP. La información sobre situaciones laborales que compartes en tus consultas se trata con estricta confidencialidad.</p>
+      </div>
+
+      <div class="legal-section" id="p3">
+        <div class="legal-section-num">03</div>
+        <div class="legal-section-title">Finalidades del tratamiento</div>
+        <p class="legal-p"><strong>Finalidades primarias (necesarias para el servicio):</strong></p>
+        <ul class="legal-list">
+          <li>Proveer orientación legal laboral personalizada</li>
+          <li>Gestionar tu cuenta, plan y consultas disponibles</li>
+          <li>Procesar pagos y emitir comprobantes</li>
+          <li>Verificar cédulas profesionales e identidad de abogados</li>
+          <li>Conectarte con abogados del pool cuando lo solicites</li>
+        </ul>
+        <p class="legal-p"><strong>Finalidades secundarias (puedes oponerte):</strong></p>
+        <ul class="legal-list">
+          <li>Enviarte comunicaciones sobre nuevas funciones o planes</li>
+          <li>Generar estadísticas agregadas y anónimas de uso</li>
+          <li>Mejorar el modelo de respuestas del Agente</li>
+        </ul>
+        <div class="legal-highlight">Para oponerte a las finalidades secundarias envía un mensaje a privacidad@agentlft.mx con el asunto "Oposición finalidades secundarias" indicando tu número de teléfono.</div>
+      </div>
+
+      <div class="legal-section" id="p4">
+        <div class="legal-section-num">04</div>
+        <div class="legal-section-title">Transferencia de datos personales</div>
+        <p class="legal-p">Tus datos pueden ser compartidos con los siguientes terceros únicamente para los fines indicados:</p>
+        <ul class="legal-list">
+          <li><strong>Stripe Inc.</strong> — procesamiento de pagos. Sujeto a su propia política de privacidad</li>
+          <li><strong>Meta Platforms Inc.</strong> — infraestructura de mensajería WhatsApp. Solo para entrega de mensajes</li>
+          <li><strong>Google LLC</strong> — almacenamiento de datos operativos en Google Sheets y Drive</li>
+          <li><strong>Anthropic PBC</strong> — procesamiento de consultas mediante IA. Sin almacenamiento permanente de conversaciones</li>
+        </ul>
+        <p class="legal-p">No vendemos, arrendamos ni cedemos tus datos a terceros con fines comerciales o publicitarios. Nunca.</p>
+        <p class="legal-p">Los abogados del pool solo reciben la información mínima necesaria para atender cada caso. Tu número de teléfono nunca es compartido directamente.</p>
+      </div>
+
+      <div class="legal-section" id="p5">
+        <div class="legal-section-num">05</div>
+        <div class="legal-section-title">Derechos ARCO</div>
+        <p class="legal-p">Tienes derecho a <strong>Acceder, Rectificar, Cancelar u Oponerte</strong> al tratamiento de tus datos personales (derechos ARCO) conforme a la LFPDPPP.</p>
+        <p class="legal-p">Para ejercer tus derechos ARCO:</p>
+        <ul class="legal-list">
+          <li>Envía un correo a <strong>privacidad@agentlft.mx</strong> con asunto "Derechos ARCO"</li>
+          <li>Indica tu nombre completo y número de teléfono registrado</li>
+          <li>Describe el derecho que deseas ejercer y los datos involucrados</li>
+          <li>Adjunta copia de tu identificación oficial vigente</li>
+        </ul>
+        <p class="legal-p">Responderemos en un plazo máximo de <strong>20 días hábiles</strong> a partir de la recepción de tu solicitud completa.</p>
+      </div>
+
+      <div class="legal-section" id="p6">
+        <div class="legal-section-num">06</div>
+        <div class="legal-section-title">Cookies y tecnologías similares</div>
+        <p class="legal-p">El sitio web de Agente LFT (agentlft.mx) puede utilizar cookies esenciales para el funcionamiento del portal. No utilizamos cookies de rastreo publicitario ni compartimos datos de navegación con terceros con fines publicitarios.</p>
+        <p class="legal-p">Puedes configurar tu navegador para rechazar cookies, aunque algunas funciones del portal pueden verse afectadas.</p>
+      </div>
+
+      <div class="legal-section" id="p7">
+        <div class="legal-section-num">07</div>
+        <div class="legal-section-title">Cambios al Aviso de Privacidad</div>
+        <p class="legal-p">Cualquier modificación a este aviso será notificada a través de WhatsApp con al menos <strong>15 días de anticipación</strong> antes de su entrada en vigor. La versión actualizada estará siempre disponible en esta página.</p>
+        <p class="legal-p">Para consultas sobre privacidad: <strong>privacidad@agentlft.mx</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">Agente LFT</div>
+  <div class="footer-center">© 2026 Disrupting MEX · Ciudad de México<br />Todos los derechos reservados</div>
+  <div class="footer-links">
+    <a href="index.html">Inicio</a>
+    <a href="pricing.html">Planes</a>
+    <a href="abogados.html">Abogados</a>
+  </div>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animateRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animateRing);}
+animateRing();
+
+function showDoc(id, btn){
+  document.querySelectorAll('.doc-content').forEach(d=>d.classList.remove('active'));
+  document.querySelectorAll('.doc-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('doc-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Highlight TOC on scroll
+const sections = document.querySelectorAll('.legal-section');
+const links = document.querySelectorAll('.toc-link');
+window.addEventListener('scroll', ()=>{
+  let current='';
+  sections.forEach(s=>{
+    if(window.scrollY >= s.offsetTop - 120) current=s.id;
+  });
+  links.forEach(l=>{
+    l.classList.toggle('active', l.getAttribute('href')==='#'+current);
+  });
+});
+</script>
+</body>
+</html>
