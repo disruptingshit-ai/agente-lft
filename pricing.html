@@ -345,6 +345,58 @@ function toggleBilling() {
 const reveals=document.querySelectorAll('.reveal');
 const io=new IntersectionObserver(e=>{e.forEach(r=>{if(r.isIntersecting){r.target.classList.add('visible');io.unobserve(r.target);}});},{threshold:.1});
 reveals.forEach(r=>io.observe(r));
+
+// ── Modal de teléfono antes de redirigir a Stripe ──
+let pendingStripeUrl = '';
+const STRIPE_BTNS = ['plus-btn-1','plus-btn-2','plus-btn-3'];
+STRIPE_BTNS.forEach(id=>{
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.addEventListener('click',e=>{
+    e.preventDefault();
+    pendingStripeUrl=el.href;
+    openPhoneModal();
+  });
+});
+
+function openPhoneModal(){
+  document.getElementById('phone-modal').style.display='flex';
+  document.getElementById('modal-phone-input').value='';
+  document.getElementById('modal-phone-err').style.display='none';
+  setTimeout(()=>document.getElementById('modal-phone-input').focus(),100);
+}
+function closePhoneModal(){
+  document.getElementById('phone-modal').style.display='none';
+  pendingStripeUrl='';
+}
+function goToStripe(){
+  const raw=document.getElementById('modal-phone-input').value.replace(/\D/g,'');
+  if(raw.length<10){document.getElementById('modal-phone-err').style.display='block';return;}
+  const phone='52'+raw.slice(-10);
+  const url=new URL(pendingStripeUrl);
+  url.searchParams.set('client_reference_id',phone);
+  window.location.href=url.toString();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePhoneModal();});
 </script>
+
+<!-- Modal captura teléfono -->
+<div id="phone-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:2rem;max-width:360px;width:100%;position:relative;">
+    <button onclick="closePhoneModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer;">✕</button>
+    <div style="font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#c9b370;margin-bottom:.75rem;">Último paso</div>
+    <h3 style="font-size:1.2rem;font-weight:700;margin:0 0 .5rem;">¿A qué WhatsApp activamos tu plan?</h3>
+    <p style="font-size:.8rem;opacity:.6;margin:0 0 1.5rem;">Necesitamos tu número para activar el plan Plus en tu cuenta.</p>
+    <label style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.7;display:block;margin-bottom:.4rem;">Número de WhatsApp (México)</label>
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;">
+      <span style="font-size:.9rem;font-weight:600;opacity:.5;padding:.75rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:8px;background:#111;">+52</span>
+      <input id="modal-phone-input" type="tel" placeholder="55 1234 5678" maxlength="12"
+        style="flex:1;background:#111;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.75rem 1rem;color:#f5f0e8;font-size:.95rem;font-family:inherit;outline:none;"
+        onkeydown="if(event.key==='Enter')goToStripe()"/>
+    </div>
+    <div id="modal-phone-err" style="display:none;font-size:.75rem;color:#ff6b6b;margin-bottom:.75rem;">Ingresa un número válido de 10 dígitos.</div>
+    <button onclick="goToStripe()" style="width:100%;background:#c9b370;color:#0a0a0a;border:none;border-radius:8px;padding:.85rem;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;">Continuar al pago →</button>
+  </div>
+</div>
 </body>
 </html>

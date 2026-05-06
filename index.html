@@ -219,9 +219,15 @@ footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-conten
       <p class="plan-feature">Cálculos personalizados</p>
       <p class="plan-feature">Conexión con abogado certificado</p>
       <div class="plan-cta">
+<<<<<<< Updated upstream
         <a href="https://buy.stripe.com/7sY00l8TZ9Hs7t2dZY8og02" class="plan-btn">Mensual $49/mes →</a>
         <a href="https://buy.stripe.com/aFa00l6LR1aWeVuaNM8og01" class="plan-btn" style="font-size:.6rem;">6 meses — $234 MXN <span style="font-size:.55rem;opacity:.7;">−20%</span> →</a>
         <a href="https://buy.stripe.com/6oUfZjb273j49Baf428og03" class="plan-btn" style="font-size:.6rem;">12 meses — $348 MXN <span style="font-size:.55rem;opacity:.7;">−40%</span> →</a>
+=======
+        <a href="https://buy.stripe.com/7sY00l8TZ9Hs7t2dZY8og02" class="plan-btn idx-stripe">Mensual $49/mes →</a>
+        <a href="https://buy.stripe.com/aFa00l6LR1aWeVuaNM8og01" class="plan-btn idx-stripe" style="font-size:.6rem;">6 meses — $234 MXN <span style="font-size:.55rem;opacity:.7;">−20%</span> →</a>
+        <a href="https://buy.stripe.com/6oUfZjb273j49Baf428og03" class="plan-btn idx-stripe" style="font-size:.6rem;">12 meses — $348 MXN <span style="font-size:.55rem;opacity:.7;">−40%</span> →</a>
+>>>>>>> Stashed changes
       </div>
     </div>
 
@@ -377,6 +383,47 @@ animateRing();
 const reveals=document.querySelectorAll('.reveal');
 const io=new IntersectionObserver(e=>{e.forEach(r=>{if(r.isIntersecting){r.target.classList.add('visible');io.unobserve(r.target);}});},{threshold:.1});
 reveals.forEach(r=>io.observe(r));
+
+// ── Modal teléfono antes de Stripe ──
+let pendingStripeUrl='';
+document.querySelectorAll('.idx-stripe').forEach(el=>{
+  el.addEventListener('click',e=>{
+    e.preventDefault();
+    pendingStripeUrl=el.href;
+    document.getElementById('idx-phone-modal').style.display='flex';
+    document.getElementById('idx-phone-input').value='';
+    document.getElementById('idx-phone-err').style.display='none';
+    setTimeout(()=>document.getElementById('idx-phone-input').focus(),100);
+  });
+});
+function idxCloseModal(){document.getElementById('idx-phone-modal').style.display='none';pendingStripeUrl='';}
+function idxGoStripe(){
+  const raw=document.getElementById('idx-phone-input').value.replace(/\D/g,'');
+  if(raw.length<10){document.getElementById('idx-phone-err').style.display='block';return;}
+  const url=new URL(pendingStripeUrl);
+  url.searchParams.set('client_reference_id','52'+raw.slice(-10));
+  window.location.href=url.toString();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')idxCloseModal();});
 </script>
+
+<!-- Modal captura teléfono -->
+<div id="idx-phone-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:2rem;max-width:360px;width:100%;position:relative;">
+    <button onclick="idxCloseModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer;">✕</button>
+    <div style="font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#c9b370;margin-bottom:.75rem;">Último paso</div>
+    <h3 style="font-size:1.2rem;font-weight:700;margin:0 0 .5rem;">¿A qué WhatsApp activamos tu plan?</h3>
+    <p style="font-size:.8rem;opacity:.6;margin:0 0 1.5rem;">Lo usamos para activar tu plan Plus inmediatamente después del pago.</p>
+    <label style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.7;display:block;margin-bottom:.4rem;">Número de WhatsApp (México)</label>
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;">
+      <span style="font-size:.9rem;font-weight:600;opacity:.5;padding:.75rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:8px;background:#111;">+52</span>
+      <input id="idx-phone-input" type="tel" placeholder="55 1234 5678" maxlength="12"
+        style="flex:1;background:#111;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.75rem 1rem;color:#f5f0e8;font-size:.95rem;font-family:inherit;outline:none;"
+        onkeydown="if(event.key==='Enter')idxGoStripe()"/>
+    </div>
+    <div id="idx-phone-err" style="display:none;font-size:.75rem;color:#ff6b6b;margin-bottom:.75rem;">Ingresa un número válido de 10 dígitos.</div>
+    <button onclick="idxGoStripe()" style="width:100%;background:#c9b370;color:#0a0a0a;border:none;border-radius:8px;padding:.85rem;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;">Continuar al pago →</button>
+  </div>
+</div>
 </body>
 </html>
