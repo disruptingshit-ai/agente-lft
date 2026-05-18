@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Agente LFT — Asesoría Laboral en WhatsApp</title>
+<title>TDS — Asesoría Legal en WhatsApp</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,900&display=swap" rel="stylesheet" />
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -11,18 +11,26 @@
 html { scroll-behavior: smooth; font-size: 16px; }
 body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; cursor: none; }
 .cursor { width:8px;height:8px;background:var(--ink);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%); }
-.cursor-ring { width:32px;height:32px;border:1px solid #E8572A;border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.7; }
+.cursor-ring { width:32px;height:32px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.7; }
 a,button{cursor:none;}
+
+/* NAV */
 nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 5vw;background:rgba(248,246,241,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule); }
-.nav-logo { font-size:1rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--ink); }
+.nav-logo { text-decoration:none;color:var(--ink);line-height:1; }
+.nav-logo-main { font-size:1.3rem;font-weight:900;letter-spacing:.05em;display:block; }
+.nav-logo-sub { font-size:.45rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--ghost);display:block;margin-top:.1rem; }
 .nav-links { display:flex;gap:2.5rem;list-style:none; }
 .nav-links a { font-size:.7rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;color:var(--ink);opacity:.5;transition:opacity .2s; }
 .nav-links a:hover{opacity:1;}
+
+/* HERO */
 .hero { min-height:100vh;display:grid;grid-template-rows:1fr auto;padding:0 5vw;position:relative;overflow:hidden; }
-.hero-content { display:flex;flex-direction:column;justify-content:center;padding-top:8rem;position:relative;z-index:1; }
+.hero-content { display:flex;flex-direction:column;justify-content:center;padding-top:5rem;position:relative;z-index:1; }
 .hero-eyebrow { font-size:.65rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ghost);margin-bottom:2rem;opacity:0;animation:fadeUp .8s .2s forwards;display:flex;align-items:center;gap:.75rem; }
 .hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
-.hero-title { font-size:clamp(4rem,11vw,11rem);font-weight:900;line-height:.92;letter-spacing:-.03em;margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s .4s forwards; }
+.hero-tagline { font-size:clamp(1rem,1.5vw,1.2rem);font-weight:300;line-height:1.8;letter-spacing:0;color:#555;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .35s forwards;max-width:620px; }
+.hero-title { font-size:clamp(2rem,4.5vw,4.5rem);font-weight:900;line-height:1;letter-spacing:-.03em;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .4s forwards; }
+.hero-title .t-accent { color: var(--accent); }
 .hero-sub { font-size:1.1rem;font-weight:300;line-height:1.7;color:var(--ghost);max-width:580px;margin-bottom:3rem;opacity:0;animation:fadeUp .8s .6s forwards; }
 .hero-cta { display:flex;gap:1.25rem;align-items:center;opacity:0;animation:fadeUp .8s .8s forwards; }
 .hero-bg-num { position:absolute;right:-2rem;top:50%;transform:translateY(-50%);font-size:38vw;font-weight:900;color:var(--warm);line-height:1;pointer-events:none;user-select:none;z-index:0; }
@@ -32,20 +40,46 @@ nav { position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:c
 .stat:last-child{border-right:none;padding-left:2rem;}
 .stat:nth-child(2){padding-left:2rem;}
 .stat-num { font-size:2.5rem;font-weight:900;line-height:1;margin-bottom:.25rem; }
+.stat-num .t-accent { color: var(--accent); }
 .stat-label { font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ghost); }
+
+/* AREAS TAGS */
+.areas-strip { display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .7s forwards; }
+.area-tag { font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.3rem .75rem;border:1px solid var(--rule);color:var(--ghost);white-space:nowrap; }
+.area-tag.accent { border-color:var(--accent);color:var(--accent); }
+
+/* BUTTONS */
 .btn-primary { display:inline-flex;align-items:center;gap:.75rem;background:var(--ink);color:var(--paper);padding:1rem 2rem;font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;border:none;transition:background .2s,transform .2s; }
 .btn-primary:hover{background:#2a2a2a;transform:translateY(-1px);}
 .btn-ghost { font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px;transition:color .2s,border-color .2s; }
 .btn-ghost:hover{color:var(--ink);border-color:var(--ink);}
+
+/* SECTIONS */
 section { padding:7rem 5vw;border-top:1px solid var(--rule); }
 .section-label { font-size:.6rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--ghost);margin-bottom:3rem;display:flex;align-items:center;gap:1rem; }
 .section-label::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;}
 .section-label::after{content:'';flex:1;height:1px;background:var(--rule);}
 .section-title { font-size:clamp(2.8rem,6vw,6rem);font-weight:900;line-height:1;letter-spacing:-.03em; }
 .section-title em{font-style:normal;font-weight:300;}
+
+/* MISSION */
 .mission-grid { display:grid;grid-template-columns:1fr 1fr;gap:5rem;margin-top:4rem;align-items:start; }
 .mission-text p { font-size:1.05rem;line-height:1.8;color:#444;margin-bottom:1.5rem; }
 .mission-quote { font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:300;line-height:1.4;color:var(--ink);border-left:2px solid var(--accent);padding-left:2rem; }
+
+/* AREAS SECTION */
+.areas-grid { display:grid;grid-template-columns:repeat(4,1fr);margin-top:4rem;border:1px solid var(--rule); }
+.area-card { padding:2rem;border-right:1px solid var(--rule);transition:background .3s; }
+.area-card:last-child{border-right:none;}
+.area-card:hover{background:var(--warm);}
+.area-card:nth-child(4n){border-right:none;}
+.area-card:nth-child(n+5){border-top:1px solid var(--rule);}
+.area-num { font-size:2.5rem;font-weight:900;color:var(--rule);line-height:1;margin-bottom:1rem; }
+.area-card h3 { font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;color:var(--ink); }
+.area-card p { font-size:.8rem;line-height:1.65;color:var(--ghost); }
+.area-tag-pill { display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--accent);color:#fff;padding:.2rem .5rem;margin-bottom:.75rem; }
+
+/* STEPS */
 .steps { display:grid;grid-template-columns:repeat(4,1fr);margin-top:4rem;border:1px solid var(--rule); }
 .step { padding:2.5rem;border-right:1px solid var(--rule);transition:background .3s; }
 .step:last-child{border-right:none;}
@@ -53,6 +87,8 @@ section { padding:7rem 5vw;border-top:1px solid var(--rule); }
 .step-num { font-size:3rem;font-weight:900;color:var(--rule);line-height:1;margin-bottom:1.5rem; }
 .step h3 { font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem; }
 .step p { font-size:.85rem;line-height:1.7;color:var(--ghost); }
+
+/* PLANS */
 .plans-grid { display:grid;grid-template-columns:repeat(4,1fr);margin-top:4rem;border:1px solid var(--rule); }
 .plan { padding:2.5rem 2rem;border-right:1px solid var(--rule);display:flex;flex-direction:column;transition:background .3s; }
 .plan:last-child{border-right:none;}
@@ -60,11 +96,11 @@ section { padding:7rem 5vw;border-top:1px solid var(--rule); }
 .plan.featured .plan-price,.plan.featured .plan-name,.plan.featured .plan-feature{color:var(--paper);}
 .plan.featured .plan-feature{opacity:.7;}
 .plan.featured .plan-divider{border-color:rgba(255,255,255,.15);}
-.plan.featured .plan-badge{background:var(--paper);color:var(--ink);}
+.plan.featured .plan-badge{background:var(--accent);color:#fff;}
 .plan-badge { display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:.2rem .6rem;margin-bottom:1.25rem;align-self:flex-start; }
 .plan-name { font-size:1.8rem;font-weight:700;margin-bottom:.5rem;line-height:1.1; }
 .plan-price { font-size:.75rem;font-weight:700;color:var(--ghost);margin-bottom:.25rem; }
-.plan-price-loyalty { font-size:.65rem;color:var(--ghost);margin-bottom:1.5rem;line-height:1.6;opacity:.8; }
+.plan-price-loyalty { font-size:.65rem;color:var(--ghost);margin-bottom:1.5rem;line-height:1.8;opacity:.8; }
 .plan-divider { border:none;border-top:1px solid var(--rule);margin:1.25rem 0; }
 .plan-feature { font-size:.78rem;line-height:1.6;color:#555;margin-bottom:.5rem;padding-left:1rem;position:relative; }
 .plan-feature::before{content:'—';position:absolute;left:0;color:var(--ghost);font-size:.7rem;}
@@ -73,6 +109,8 @@ section { padding:7rem 5vw;border-top:1px solid var(--rule); }
 .plan-btn:hover{background:var(--ink);color:var(--paper);}
 .plan.featured .plan-btn{border-color:var(--paper);color:var(--paper);}
 .plan.featured .plan-btn:hover{background:var(--paper);color:var(--ink);}
+
+/* PARTNERS */
 .partner-grid { display:grid;grid-template-columns:1fr 1fr;margin-top:4rem;border:1px solid var(--rule); }
 .partner-card { padding:3rem;border-right:1px solid var(--rule);transition:background .3s; }
 .partner-card:last-child{border-right:none;}
@@ -80,18 +118,17 @@ section { padding:7rem 5vw;border-top:1px solid var(--rule); }
 .partner-tag { font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem; }
 .partner-tag::before{content:'';width:24px;height:1px;background:var(--rule);}
 .partner-name { font-size:2.2rem;font-weight:700;margin-bottom:1rem;line-height:1.1; }
-.partner-desc { font-size:.85rem;line-height:1.75;color:#666;margin-bottom:2rem; }
-.partner-features { list-style:none;margin-bottom:1.5rem; }
-.partner-features li { font-size:.8rem;color:#555;padding:.5rem 0;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:.75rem; }
-.partner-features li::before{content:'·';color:var(--ink);font-size:1.2rem;flex-shrink:0;margin-top:-.1rem;}
-.partner-price-note { font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.25rem; }
 .partner-features { list-style:none; }
 .partner-features li { font-size:.8rem;color:#555;padding:.45rem 0;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:.6rem; }
 .partner-features li::before{content:'—';color:var(--ghost);font-size:.7rem;flex-shrink:0;margin-top:.1rem;}
+
+/* PRIVACY */
 .privacy-note { background:var(--warm);padding:2rem 5vw;border-top:1px solid var(--rule);display:flex;align-items:flex-start;gap:2rem; }
 .privacy-icon { width:20px;height:20px;min-width:20px;border:1px solid var(--ink);border-radius:50%;margin-top:.15rem; }
 .privacy-text { font-size:.8rem;line-height:1.7;color:#666; }
 .privacy-text strong{color:var(--ink);}
+
+/* IMPACT */
 .impact-section { background:var(--ink);color:var(--paper);padding:7rem 5vw; }
 .impact-section .section-label{color:rgba(255,255,255,.3);}
 .impact-section .section-label::after{background:rgba(255,255,255,.1);}
@@ -100,32 +137,48 @@ section { padding:7rem 5vw;border-top:1px solid var(--rule); }
 .vulnerable-note { border-left:2px solid var(--accent);padding:.75rem 1.5rem;margin-top:2rem;font-size:.85rem;line-height:1.7;color:rgba(255,255,255,.7); }
 .vulnerable-note strong{color:var(--paper);}
 .vulnerable-note a{color:var(--paper);}
+
+/* FOOTER */
 footer { padding:3rem 5vw;border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem; }
-.footer-brand{font-size:1.2rem;font-weight:700;letter-spacing:.1em;}
+.footer-brand { line-height:1; }
+.footer-brand-main { font-size:1.6rem;font-weight:900;letter-spacing:.05em;display:block; }
+.footer-brand-sub { font-size:.45rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--ghost);display:block;margin-top:.2rem; }
+.footer-brand .t-accent{color:var(--accent);}
 .footer-center{text-align:center;font-size:.65rem;color:var(--ghost);letter-spacing:.1em;line-height:1.8;}
 .footer-links{display:flex;justify-content:flex-end;gap:2rem;}
 .footer-links a{font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--ghost);text-decoration:none;transition:color .2s;}
 .footer-links a:hover{color:var(--ink);}
+.footer-disrupthings { font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-top:.35rem; }
+
+/* ANIMATIONS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
 .reveal.visible{opacity:1;transform:none;}
+
+/* FREE BADGE */
+.free-badge { display:inline-flex;align-items:center;gap:.4rem;font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;background:var(--warm);border:1px solid var(--rule);color:var(--ghost);padding:.3rem .75rem;margin-bottom:2rem;opacity:0;animation:fadeUp .8s .65s forwards; }
+.free-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+
+/* RESPONSIVE */
 @media(max-width:900px){
-nav{padding:1.25rem 1.5rem;}.nav-links{display:none;}
-[style*="grid-template-columns:1fr 1fr 1fr"]{display:block !important;}
-[style*="grid-template-columns:1fr 1fr 1fr"] > div{border-right:none !important;border-bottom:1px solid var(--rule);}
-section,.impact-section{padding:4rem 1.5rem;}
-.hero{padding:0 1.5rem;}.hero-title{font-size:clamp(3rem,12vw,5rem);}.hero-bg-num{display:none;}
-.hero-stats{grid-template-columns:repeat(3,1fr);}
-.mission-grid,.partner-grid{grid-template-columns:1fr;gap:2.5rem;}
-.steps{grid-template-columns:1fr 1fr;}.step{border-bottom:1px solid var(--rule);}
-.plans-grid{grid-template-columns:1fr 1fr;}
-footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-content:center;}
-.privacy-note{padding:1.5rem;}
+  nav{padding:1.25rem 1.5rem;}.nav-links{display:none;}
+  [style*="grid-template-columns:1fr 1fr 1fr"]{display:block !important;}
+  [style*="grid-template-columns:1fr 1fr 1fr"] > div{border-right:none !important;border-bottom:1px solid var(--rule);}
+  section,.impact-section{padding:4rem 1.5rem;}
+  .hero{padding:0 1.5rem;}.hero-title{font-size:clamp(3rem,12vw,5rem);}.hero-bg-num{display:none;}
+  .hero-stats{grid-template-columns:repeat(3,1fr);}
+  .mission-grid,.partner-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .steps{grid-template-columns:1fr 1fr;}.step{border-bottom:1px solid var(--rule);}
+  .plans-grid{grid-template-columns:1fr 1fr;}
+  .areas-grid{grid-template-columns:1fr 1fr;}
+  footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-content:center;}
+  .privacy-note{padding:1.5rem;}
 }
 @media(max-width:600px){
-.steps{grid-template-columns:1fr;}.plans-grid{grid-template-columns:1fr;}
-.hero-stats{grid-template-columns:1fr;}.stat{border-right:none;border-bottom:1px solid var(--rule);padding:1rem 0;}
+  .steps{grid-template-columns:1fr;}.plans-grid{grid-template-columns:1fr;}
+  .areas-grid{grid-template-columns:1fr;}
+  .hero-stats{grid-template-columns:1fr;}.stat{border-right:none;border-bottom:1px solid var(--rule);padding:1rem 0;}
 }
 </style>
 </head>
@@ -134,23 +187,36 @@ footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-conten
 <div class="cursor-ring" id="cursorRing"></div>
 
 <nav>
-  <a href="index.html" class="nav-logo">Agente LFT</a>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-main"><span class="t-accent">T</span>DS</span>
+  </a>
   <ul class="nav-links">
-    <li><a href="index.html#como-funciona">Cómo funciona</a></li>
+    <li><a href="#areas">En qué ayudamos</a></li>
+    <li><a href="#como-funciona">Cómo funciona</a></li>
     <li><a href="pricing.html">Planes</a></li>
-    <li><a href="index.html#partners">Aliados</a></li>
-    <li><a href="index.html#impacto">Impacto</a></li>
+    <li><a href="#partners">Aliados</a></li>
+    <li><a href="#impacto">Impacto</a></li>
     <li><a href="abogados.html">Abogados</a></li>
-    
   </ul>
 </nav>
 
 <div class="hero">
   <div class="hero-bg-num" aria-hidden="true">⚖</div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Asesoría Laboral · México · WhatsApp</p>
-    <h1 class="hero-title">Tu trabajo vale.<br />La ley lo respalda.</h1>
-    <p class="hero-sub">Consulta la Ley Federal del Trabajo en tiempo real desde WhatsApp. Sin citas. Sin esperas. Con abogados reales cuando los necesitas.</p>
+    <p class="hero-eyebrow">Asesoría Legal · México · WhatsApp</p>
+    <h1 class="hero-title"><span class="t-accent">T</span>DS</h1>
+    <p class="hero-tagline">En México, la mayoría de la gente no sabe qué hacer cuando la multan injustamente, le retienen el depósito de renta, una app los bloquea sin explicación, o un cobrador los amenaza por una deuda que ya prescribió.<br /><br />La ley los protege. Nadie se los ha explicado.<br /><strong style="color:var(--ink);font-weight:700;">TDS existe para cambiar eso.</strong></p>
+    <div class="areas-strip">
+      <span class="area-tag accent">Laboral</span>
+      <span class="area-tag">Tránsito CDMX</span>
+      <span class="area-tag">Consumidor</span>
+      <span class="area-tag">Deudas</span>
+      <span class="area-tag">Renta</span>
+      <span class="area-tag">Plataformas digitales</span>
+      <span class="area-tag">Migratorio</span>
+      <span class="area-tag">Penal · Fiscal</span>
+    </div>
+    <div class="free-badge">8 consultas gratis · por número</div>
     <div class="hero-cta">
       <a href="https://wa.me/525534844790" class="btn-primary">Consultar gratis →</a>
       <a href="pricing.html" class="btn-ghost">Ver planes</a>
@@ -158,36 +224,90 @@ footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-conten
   </div>
   <hr class="hero-rule" />
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Consultas gratis de inicio</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Situaciones que resolvemos</div></div>
     <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Disponibilidad</div></div>
-    <div class="stat"><div class="stat-num">LFT</div><div class="stat-label">Ley Federal del Trabajo</div></div>
+    <div class="stat"><div class="stat-num"><span class="t-accent">8</span> gratis</div><div class="stat-label">Por número · sin tarjeta</div></div>
   </div>
 </div>
 
-<section id="mision">
-  <div class="section-label">Nuestra misión</div>
-  <div class="mission-grid reveal">
-    <div><h2 class="section-title">Democratizar<br />el acceso <em>a la justicia</em><br />laboral.</h2></div>
-    <div class="mission-text">
-      <p>En México, millones de trabajadores enfrentan abusos laborales sin saber que la ley los protege. La ignorancia de los derechos es el arma más usada por quienes los violan.</p>
-      <p>Agente LFT existe para cambiar eso.</p>
-      <p>Un mensaje. Tus derechos explicados en lenguaje claro, lo que te deben calculado con tus datos, y un abogado real cuando lo necesitas.</p>
-      <blockquote class="mission-quote">"Conocer la ley es el primer acto de justicia."</blockquote>
+<!-- EN QUÉ TE AYUDAMOS -->
+<section id="areas">
+  <div class="section-label">En qué te podemos ayudar</div>
+  <h2 class="section-title reveal">Lo que te pasa<br /><em>tiene solución.</em></h2>
+  <div class="areas-grid reveal">
+
+    <div class="area-card">
+      <div class="area-tag-pill">Trabajo</div>
+      <div class="area-num">01</div>
+      <h3>Te despidieron o no te pagan bien</h3>
+      <p>Calcula lo que te deben: liquidación, finiquito, horas extra, vacaciones. En segundos, con tus datos.</p>
     </div>
+
+    <div class="area-card">
+      <div class="area-tag-pill" style="background:var(--ink);">Tránsito</div>
+      <div class="area-num">02</div>
+      <h3>Te multaron o te detuvieron</h3>
+      <p>Infracciones, remisiones, lo que el agente puede y no puede pedirte. Sabe qué decir antes de firmar.</p>
+    </div>
+
+    <div class="area-card">
+      <div class="area-tag-pill" style="background:var(--ink);">Consumidor</div>
+      <div class="area-num">03</div>
+      <h3>Te cobraron de más o no cumplen</h3>
+      <p>Garantías incumplidas, cobros incorrectos, publicidad engañosa. Cómo reclamar y que funcione.</p>
+    </div>
+
+    <div class="area-card">
+      <div class="area-tag-pill" style="background:var(--ink);">Deudas</div>
+      <div class="area-num">04</div>
+      <h3>Te están cobrando una deuda</h3>
+      <p>Qué pueden y no pueden hacer los cobradores. Si ya prescribió, no les debes nada. Nosotros te lo decimos.</p>
+    </div>
+
+    <div class="area-card">
+      <div class="area-tag-pill" style="background:var(--ink);">Renta</div>
+      <div class="area-num">05</div>
+      <h3>Problemas con tu renta o casero</h3>
+      <p>Aumentos abusivos, depósitos retenidos, desalojos. Tus derechos como inquilino, claros y concretos.</p>
+    </div>
+
+    <div class="area-card">
+      <div class="area-tag-pill" style="background:var(--ink);">Plataformas</div>
+      <div class="area-num">06</div>
+      <h3>Uber, DiDi o Rappi te bloquearon</h3>
+      <p>Desactivaciones, accidentes, pagos incorrectos. Lo que las apps no te dicen pero la ley sí garantiza.</p>
+    </div>
+
+    <div class="area-card">
+      <div class="area-tag-pill" style="background:var(--ink);">Migración</div>
+      <div class="area-num">07</div>
+      <h3>Tu situación migratoria te preocupa</h3>
+      <p>Visas, residencia, regularización. Orientación clara sobre qué opciones tienes y cuáles son los riesgos.</p>
+    </div>
+
+    <div class="area-card">
+      <div class="area-tag-pill" style="background:var(--ink);">Penal · Fiscal</div>
+      <div class="area-num">08</div>
+      <h3>No sabes si necesitas un abogado</h3>
+      <p>Ante una situación penal o fiscal, lo primero es entender qué tan grave es. Te orientamos sin rodeos.</p>
+    </div>
+
   </div>
 </section>
 
+<!-- CÓMO FUNCIONA -->
 <section id="como-funciona">
   <div class="section-label">Cómo funciona</div>
   <h2 class="section-title reveal">Simple como un <em>mensaje.</em></h2>
   <div class="steps reveal">
-    <div class="step"><div class="step-num">01</div><h3>Escribe tu duda</h3><p>En WhatsApp, en tus propias palabras. Sin formularios, sin formalismos.</p></div>
-    <div class="step"><div class="step-num">02</div><h3>Obtén respuesta</h3><p>El Agente analiza tu situación con base en la LFT vigente y te da una respuesta clara con pasos concretos.</p></div>
-    <div class="step"><div class="step-num">03</div><h3>Calcula lo tuyo</h3><p>Liquidaciones, finiquitos, horas extra, prima vacacional. El Agente hace los números con tus datos reales.</p></div>
-    <div class="step"><div class="step-num">04</div><h3>Habla con un abogado</h3><p>Cuando necesitas más, conectamos desde WhatsApp con el primer abogado certificado disponible. Número privado, siempre.</p></div>
+    <div class="step"><div class="step-num">01</div><h3>Cuéntanos qué pasó</h3><p>En WhatsApp, como le contarías a un amigo. "Me bloquearon en Rappi sin avisar", "mi casero no me regresa el depósito", "me detuvieron y no sé si tenía que firmar".</p></div>
+    <div class="step"><div class="step-num">02</div><h3>Entiendes tu situación</h3><p>Te explicamos qué dice la ley en tu caso específico: si tienes razón, qué puedes exigir y cuáles son tus opciones reales. Sin rodeos.</p></div>
+    <div class="step"><div class="step-num">03</div><h3>Sabes exactamente qué sigue</h3><p>¿Te deben dinero? Lo calculamos. ¿Tienes que presentar una queja? Te decimos cómo y dónde. ¿La deuda ya prescribió? Te lo confirmamos.</p></div>
+    <div class="step"><div class="step-num">04</div><h3>Un abogado real si lo necesitas</h3><p>Cuando tu caso necesita más que orientación, te conectamos con un abogado certificado desde el mismo WhatsApp. Su número, siempre protegido.</p></div>
   </div>
 </section>
 
+<!-- PLANES -->
 <section id="planes">
   <div class="section-label">Planes</div>
   <h2 class="section-title reveal">El plan correcto<br />para <em>cada caso.</em></h2>
@@ -196,74 +316,77 @@ footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-conten
     <div class="plan">
       <div class="plan-name">Free</div>
       <div class="plan-price">$0 / mes</div>
-      <div class="plan-price-loyalty">Sin tarjeta. Sin compromisos.</div>
+      <div class="plan-price-loyalty">8 consultas gratis por número.<br />Sin tarjeta. Sin compromisos.</div>
       <hr class="plan-divider" />
-      <p class="plan-feature">8 consultas de inicio</p>
-      <p class="plan-feature">Cálculos básicos LFT</p>
+      <p class="plan-feature">Trabajo, renta, deudas, tránsito y más</p>
+      <p class="plan-feature">Cálculos básicos con tus datos</p>
       <p class="plan-feature">Respuesta en lenguaje claro</p>
+      <p class="plan-feature">Sin registro previo</p>
       <div class="plan-cta"><a href="https://wa.me/525534844790" class="plan-btn">Empezar gratis</a></div>
     </div>
 
     <div class="plan featured">
       <div class="plan-badge">Más popular</div>
       <div class="plan-name">Plus</div>
-      <div class="plan-price">Desde $29 MXN / mes</div>
+      <div class="plan-price">$79 MXN / mes</div>
       <div class="plan-price-loyalty">
-        Mes 1–5: $49/mes · Mes 6–11: $39/mes · Mes 12+: $29/mes<br /><br />
-        Prepago 6 meses: $234 MXN<br />
-        Prepago 12 meses: $348 MXN
+        Mensual: $79/mes<br />
+        5 meses pagados = 6 meses de acceso<br />
+        10 meses pagados = 12 meses de acceso<br /><br />
+        Videollamada con abogado: <strong style="color:#fff;">$200 MXN</strong>
       </div>
       <hr class="plan-divider" />
       <p class="plan-feature">Consultas ilimitadas</p>
-      <p class="plan-feature">Memoria de tus casos y datos</p>
+      <p class="plan-feature">Trabajo, renta, deudas, tránsito, migración y más</p>
+      <p class="plan-feature">Recuerda tus casos y datos anteriores</p>
       <p class="plan-feature">Cálculos personalizados</p>
       <p class="plan-feature">Conexión con abogado certificado</p>
+      <p class="plan-feature">Videollamada disponible ($200 MXN)</p>
       <div class="plan-cta">
-        <a href="https://buy.stripe.com/7sY00l8TZ9Hs7t2dZY8og02" class="plan-btn idx-stripe">Mensual $49/mes →</a>
-        <a href="https://buy.stripe.com/aFa00l6LR1aWeVuaNM8og01" class="plan-btn idx-stripe" style="font-size:.6rem;">6 meses — $234 MXN <span style="font-size:.55rem;opacity:.7;">−20%</span> →</a>
-        <a href="https://buy.stripe.com/6oUfZjb273j49Baf428og03" class="plan-btn idx-stripe" style="font-size:.6rem;">12 meses — $348 MXN <span style="font-size:.55rem;opacity:.7;">−40%</span> →</a>
+        <a href="https://buy.stripe.com/7sY00l8TZ9Hs7t2dZY8og02" class="plan-btn idx-stripe">Mensual $79/mes →</a>
+        <a href="https://buy.stripe.com/aFa00l6LR1aWeVuaNM8og01" class="plan-btn idx-stripe" style="font-size:.6rem;">5 meses = 6 meses acceso <span style="font-size:.55rem;opacity:.7;">−17%</span> →</a>
+        <a href="https://buy.stripe.com/6oUfZjb273j49Baf428og03" class="plan-btn idx-stripe" style="font-size:.6rem;">10 meses = 12 meses acceso <span style="font-size:.55rem;opacity:.7;">−17%</span> →</a>
       </div>
+    </div>
+
+    <div class="plan">
+      <div class="plan-badge" style="background:var(--warm);color:var(--ink)">Friends &amp; Family</div>
+      <div class="plan-name">F&amp;F</div>
+      <div class="plan-price">$39 MXN / mes</div>
+      <div class="plan-price-loyalty">Para compartir con quien más quieres. Precio especial permanente.</div>
+      <hr class="plan-divider" />
+      <p class="plan-feature">Consultas ilimitadas</p>
+      <p class="plan-feature">Trabajo, renta, deudas, tránsito y más</p>
+      <p class="plan-feature">Recuerda sus casos y datos</p>
+      <p class="plan-feature">Conexión con abogado certificado</p>
+      <div class="plan-cta"><a href="https://wa.me/525534844790" class="plan-btn">Solicitar por WhatsApp</a></div>
     </div>
 
     <div class="plan">
       <div class="plan-badge" style="background:var(--warm);color:var(--ink)">Abogados</div>
-      <div class="plan-name">Aliado<br /><span style="font-weight:300;font-size:1.4rem;">Independiente</span></div>
+      <div class="plan-name">Aliado</div>
       <div class="plan-price">Alta gratuita</div>
-      <div class="plan-price-loyalty">Alta gratuita. Los clientes que generes fuera son tuyos.</div>
+      <div class="plan-price-loyalty">Los clientes que generes fuera son tuyos.</div>
       <hr class="plan-divider" />
-      <p class="plan-feature">Alta en catálogo público certificado</p>
-      <p class="plan-feature">Recepción de clientes del pool</p>
+      <p class="plan-feature">Alta en catálogo público</p>
+      <p class="plan-feature">Clientes calificados del pool</p>
       <p class="plan-feature">Verificación de cédula e INE</p>
-      <p class="plan-feature">Numero siempre protegido</p>
+      <p class="plan-feature">Número siempre protegido</p>
       <p class="plan-feature">Ranking por calificación</p>
       <p class="plan-feature">Asesoría de 20 min — $150 MXN</p>
+      <p class="plan-feature">Videollamada — $200 MXN</p>
       <p class="plan-feature">Pro bono = visibilidad preferente</p>
       <div class="plan-cta"><a href="registro-abogado.html" class="plan-btn">Solicitar alta →</a></div>
-    </div>
-
-    <div class="plan">
-      <div class="plan-badge" style="background:var(--warm);color:var(--ink)">Despachos</div>
-      <div class="plan-name">Aliado<br /><span style="font-weight:300;font-size:1.4rem;">Despacho</span></div>
-      <div class="plan-price">$500 MXN/mes base</div>
-      <div class="plan-price-loyalty">Tecnología certificada bajo la marca de tu despacho.</div>
-      <hr class="plan-divider" />
-      <p class="plan-feature">Tecnología bajo tu marca</p>
-      <p class="plan-feature">Abogados propios certificados</p>
-      <p class="plan-feature">Pool de respaldo automático</p>
-      <p class="plan-feature">Números siempre protegidos</p>
-      <p class="plan-feature">Clientes nuevos vía plataforma</p>
-      <p class="plan-feature">Sello de despacho certificado</p>
-      <div class="plan-cta"><a href="registro-despacho.html" class="plan-btn">Registrar despacho →</a></div>
     </div>
 
   </div>
 </section>
 
+<!-- PARTNERS -->
 <section id="partners">
   <div class="section-label">Para aliados</div>
   <h2 class="section-title reveal">El estatus que<br /><em>su trabajo</em> merece.</h2>
 
-  <!-- Abogado independiente — full width -->
   <div class="reveal" style="margin-top:3rem;border:1px solid var(--rule);">
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--rule);">
       <div style="padding:2.5rem 3rem;border-right:1px solid var(--rule);">
@@ -289,6 +412,7 @@ footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-conten
         <div style="font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--ghost);margin-bottom:1.25rem;">Para el cliente</div>
         <ul class="partner-features">
           <li>Asesoría de 20 min — $150 MXN</li>
+          <li>Videollamada disponible — $200 MXN</li>
           <li>Número del abogado siempre protegido</li>
           <li>Calificación visible antes de contactar</li>
           <li>Contacto 100% a través de la plataforma</li>
@@ -297,12 +421,11 @@ footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-conten
       </div>
     </div>
 
-    <!-- Despacho certificado — full width -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;">
       <div style="padding:2.5rem 3rem;border-right:1px solid var(--rule);background:var(--ink);color:var(--paper);">
         <div style="font-size:.6rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1.5rem;">Aliado Despacho</div>
         <h3 style="font-size:2rem;font-weight:700;line-height:1.1;margin-bottom:.75rem;">Despacho<br />Certificado</h3>
-        <p style="font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.5);margin-top:.75rem;">Tecnología Agente LFT bajo su marca. Filtre consultas simples, reciba clientes nuevos.</p>
+        <p style="font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.5);margin-top:.75rem;">Tecnología TDS bajo su marca. Filtre consultas simples, reciba clientes nuevos.</p>
         <div style="margin-top:1.5rem;">
           <a href="registro-despacho.html" style="display:inline-block;padding:.75rem 1.5rem;border:1px solid rgba(255,255,255,.3);font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;color:var(--paper);transition:border-color .2s;">Registrar despacho →</a>
         </div>
@@ -317,7 +440,7 @@ footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-conten
           <li>Tecnología bajo la marca del despacho</li>
           <li>Abogados propios certificados en plataforma</li>
           <li>Pool de respaldo automático</li>
-          <li>Sello de despacho certificado Agente LFT</li>
+          <li>Sello de despacho certificado TDS</li>
           <li>Clientes nuevos vía plataforma</li>
           <li>Números de todos los abogados protegidos</li>
         </ul>
@@ -338,29 +461,35 @@ footer{grid-template-columns:1fr;text-align:center;}.footer-links{justify-conten
 
 <div class="privacy-note">
   <div class="privacy-icon"></div>
-  <p class="privacy-text"><strong>Protección de privacidad para abogados y usuarios.</strong> Ningún número telefónico es compartido directamente entre las partes. Toda comunicación ocurre a través de la plataforma de Agente LFT. Leyenda visible en cada interacción: <em>"Este número es privado y está protegido por Agente LFT. El contacto directo fuera de la plataforma no está permitido."</em></p>
+  <p class="privacy-text"><strong>Protección de privacidad para abogados y usuarios.</strong> Ningún número telefónico es compartido directamente entre las partes. Toda comunicación ocurre a través de la plataforma de TDS. Leyenda visible en cada interacción: <em>"Este número es privado y está protegido por TDS. El contacto directo fuera de la plataforma no está permitido."</em></p>
 </div>
 
+<!-- IMPACTO -->
 <section id="impacto" class="impact-section">
   <div class="section-label">Impacto social</div>
   <div>
     <h2 class="section-title reveal">Porque algunos<br />no pueden<br /><em>esperar.</em></h2>
     <div class="impact-text reveal" style="margin-top:3rem;max-width:700px;">
-      <p>En México, <strong>el 57% de los trabajadores están en la informalidad</strong>. Millones más, aunque formales, no conocen sus derechos ni saben que pueden reclamarlos.</p>
-      <p>Cuando el sistema detecta el perfil de un trabajador vulnerable, <strong>activa automáticamente el acceso ilimitado sin costo</strong>. Sin formularios. Sin explicaciones.</p>
+      <p>En México, la gente común enfrenta multas de tránsito que no sabe si tiene que pagar, caseros que retienen depósitos sin razón, cobradoras que amenazan por deudas que ya prescribieron, o apps que los desactivan de un día para otro. La ley los protege en todos estos casos. Casi nadie lo sabe.</p>
+      <p>Cuando el sistema detecta el perfil de una persona en situación vulnerable, <strong>activa automáticamente el acceso ilimitado sin costo</strong>. Sin formularios. Sin explicaciones.</p>
       <p>Los abogados del pool que participan en el programa pro bono reciben <strong>visibilidad preferente en el catálogo</strong>. Ayudar tiene recompensa.</p>
       <div class="vulnerable-note">
-        <strong>¿Necesitas ayuda con tu situación laboral?</strong><br />
+        <strong>¿Necesitas ayuda y no puedes pagar?</strong><br />
         Si no puedes pagar, el acceso es automático y sin preguntas.<br />
-        Escríbenos a <a href="mailto:ayuda@agentlft.mx">ayuda@agentlft.mx</a> o directamente por WhatsApp.
+        Escríbenos a <a href="mailto:ayuda@tusderechos.mx">ayuda@tusderechos.mx</a> o directamente por WhatsApp.
       </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="footer-brand">Agente LFT</div>
-  <div class="footer-center">© 2026 Disrupting MEX · Ciudad de México<br />Todos los derechos reservados</div>
+  <div>
+    <div class="footer-brand">
+      <span class="footer-brand-main"><span class="t-accent">T</span>DS</span>
+    </div>
+    <div class="footer-disrupthings">by DISRUPTHINGS</div>
+  </div>
+  <div class="footer-center">© 2026 DISRUPTHINGS · Ciudad de México<br />Todos los derechos reservados</div>
   <div class="footer-links">
     <a href="abogados.html">Abogados verificados</a>
     <a href="legal.html">Términos</a>
@@ -405,18 +534,18 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')idxCloseModal();});
 <div id="idx-phone-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
   <div style="background:#1a1a1a;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:2rem;max-width:360px;width:100%;position:relative;">
     <button onclick="idxCloseModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer;">✕</button>
-    <div style="font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#c9b370;margin-bottom:.75rem;">Último paso</div>
-    <h3 style="font-size:1.2rem;font-weight:700;margin:0 0 .5rem;">¿A qué WhatsApp activamos tu plan?</h3>
-    <p style="font-size:.8rem;opacity:.6;margin:0 0 1.5rem;">Lo usamos para activar tu plan Plus inmediatamente después del pago.</p>
-    <label style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.7;display:block;margin-bottom:.4rem;">Número de WhatsApp (México)</label>
+    <div style="font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem;">Último paso</div>
+    <h3 style="font-size:1.2rem;font-weight:700;margin:0 0 .5rem;color:#f5f0e8;">¿A qué WhatsApp activamos tu plan?</h3>
+    <p style="font-size:.8rem;opacity:.6;margin:0 0 1.5rem;color:#f5f0e8;">Lo usamos para activar tu plan Plus inmediatamente después del pago.</p>
+    <label style="font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;opacity:.7;display:block;margin-bottom:.4rem;color:#f5f0e8;">Número de WhatsApp (México)</label>
     <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;">
-      <span style="font-size:.9rem;font-weight:600;opacity:.5;padding:.75rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:8px;background:#111;">+52</span>
+      <span style="font-size:.9rem;font-weight:600;opacity:.5;padding:.75rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:8px;background:#111;color:#f5f0e8;">+52</span>
       <input id="idx-phone-input" type="tel" placeholder="55 1234 5678" maxlength="12"
         style="flex:1;background:#111;border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:.75rem 1rem;color:#f5f0e8;font-size:.95rem;font-family:inherit;outline:none;"
         onkeydown="if(event.key==='Enter')idxGoStripe()"/>
     </div>
     <div id="idx-phone-err" style="display:none;font-size:.75rem;color:#ff6b6b;margin-bottom:.75rem;">Ingresa un número válido de 10 dígitos.</div>
-    <button onclick="idxGoStripe()" style="width:100%;background:#c9b370;color:#0a0a0a;border:none;border-radius:8px;padding:.85rem;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;">Continuar al pago →</button>
+    <button onclick="idxGoStripe()" style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:.85rem;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;">Continuar al pago →</button>
   </div>
 </div>
 </body>
